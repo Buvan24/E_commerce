@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quick Order - WholesaleHub</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        /* Search */
+        .bo-search-wrap { position: relative; padding: 10px 16px; background: white; border-bottom: 1px solid #eee; }
+        .bo-search-wrap i { position: absolute; left: 28px; top: 50%; transform: translateY(-50%); color: #aaa; font-size: 13px; }
+        .bo-search-input { width: 100%; padding: 9px 14px 9px 34px; border: 1.5px solid #e0e0e0; border-radius: 10px; font-size: 13px; font-family: inherit; background: #f8f8f8; outline: none; }
+        .bo-search-input:focus { border-color: #2D8B3C; }
+
+        /* Filter chips */
+        .bo-filter-bar { display: flex; gap: 7px; padding: 8px 16px; overflow-x: auto; scrollbar-width: none; background: white; border-bottom: 1px solid #eee; }
+        .bo-filter-bar::-webkit-scrollbar { display: none; }
+        .bo-filter-chip { white-space: nowrap; padding: 5px 12px; border-radius: 20px; border: 1.5px solid #ddd; font-size: 12px; font-weight: 500; cursor: pointer; background: white; color: #444; font-family: inherit; transition: all 0.2s; }
+        .bo-filter-chip.active { background: #2D8B3C; color: white; border-color: #2D8B3C; }
+
+        /* Toolbar */
+        .bo-toolbar { display: flex; align-items: center; justify-content: space-between; padding: 8px 16px; background: #f8f8f8; border-bottom: 1px solid #eee; }
+        .bo-selected-count { font-size: 12px; color: #555; font-weight: 500; }
+        .bo-toolbar-btns { display: flex; gap: 7px; }
+        .bo-sel-btn { padding: 5px 12px; border-radius: 20px; font-size: 11px; font-weight: 600; cursor: pointer; font-family: inherit; border: 1.5px solid #2D8B3C; }
+        .bo-sel-btn.select { background: #2D8B3C; color: white; }
+        .bo-sel-btn.deselect { background: white; color: #2D8B3C; }
+
+        /* Product list */
+        .bo-product-list { padding: 8px 16px; padding-bottom: 130px; display: flex; flex-direction: column; gap: 6px; }
+
+        /* COMPACT ROW — price inline with name */
+        .bo-row {
+            display: flex;
+            align-items: center;
+            background: white;
+            border: 1.5px solid #e8e8e8;
+            border-radius: 10px;
+            padding: 9px 10px;
+            gap: 10px;
+            transition: all 0.15s;
+            cursor: pointer;
+        }
+        .bo-row.selected { border-color: #2D8B3C; background: #f0faf2; }
+        .bo-row.fav { border-left: 3px solid #e53935; }
+
+        .bo-checkbox { width: 20px; height: 20px; border: 2px solid #ccc; border-radius: 5px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: all 0.15s; }
+        .bo-row.selected .bo-checkbox { background: #2D8B3C; border-color: #2D8B3C; }
+        .bo-checkbox i { color: white; font-size: 10px; display: none; }
+        .bo-row.selected .bo-checkbox i { display: block; }
+
+        /* Details: name+price on one line, bundle below */
+        .bo-details { flex: 1; min-width: 0; }
+        .bo-top { display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap; }
+        .bo-name { font-size: 13px; font-weight: 600; color: #111; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 140px; }
+        .bo-price { font-size: 13px; font-weight: 700; color: #2D8B3C; white-space: nowrap; }
+        .bo-bundle { font-size: 11px; color: #999; margin-top: 1px; }
+
+        /* Fav heart button */
+        .bo-fav { background: none; border: none; cursor: pointer; padding: 4px; flex-shrink: 0; font-size: 16px; color: #ccc; transition: all 0.2s; line-height: 1; }
+        .bo-fav.active { color: #e53935; }
+
+        /* Qty controls */
+        .bo-qty { display: flex; align-items: center; gap: 5px; flex-shrink: 0; }
+        .bo-qbtn { width: 26px; height: 26px; border-radius: 50%; border: 1.5px solid #2D8B3C; background: white; color: #2D8B3C; font-size: 15px; line-height: 1; display: flex; align-items: center; justify-content: center; cursor: pointer; font-weight: 700; }
+        .bo-qbtn:active { background: #2D8B3C; color: white; }
+        .bo-qval { width: 24px; text-align: center; font-size: 13px; font-weight: 700; border: none; background: transparent; color: #111; }
+
+        /* Favourites section label */
+        .bo-section-label { font-size: 11px; font-weight: 700; color: #e53935; text-transform: uppercase; letter-spacing: 0.8px; padding: 8px 0 4px; display: flex; align-items: center; gap: 5px; }
+
+        /* Floating Add to Cart bar */
+        .bo-bottom-bar { position: fixed; bottom: 60px; left: 50%; transform: translateX(-50%); width: calc(100% - 32px); max-width: 448px; z-index: 200; transition: all 0.25s; }
+        .bo-bottom-bar.hidden { opacity: 0; pointer-events: none; transform: translateX(-50%) translateY(16px); }
+        .bo-add-btn { width: 100%; background: #2D8B3C; color: white; border: none; padding: 13px 18px; border-radius: 12px; font-size: 14px; font-weight: 700; cursor: pointer; font-family: inherit; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 4px 16px rgba(45,139,60,0.35); }
+        .bo-add-btn-left { text-align: left; }
+        .bo-add-btn-count { font-size: 11px; opacity: 0.85; font-weight: 500; }
+        .bo-add-btn-total { font-size: 16px; font-weight: 800; }
+        .bo-add-btn-right { font-size: 13px; font-weight: 700; display: flex; align-items: center; gap: 6px; }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <header class="header">
+            <div class="header-content">
+                <a href="home.html" class="back-btn"><i class="fa-solid fa-arrow-left"></i></a>
+                <h1 class="page-title">Quick Order</h1>
+                <a href="cart.html" class="icon-link cart-icon">
+                    <i class="fa-solid fa-cart-shopping" style="font-size:20px;color:#333"></i>
+                    <span class="badge" id="cartBadge">0</span>
+                </a>
+            </div>
+        </header>
+
+        <div class="bo-search-wrap">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input class="bo-search-input" type="text" placeholder="Search products..." id="boSearch">
+        </div>
+
+        <div class="bo-filter-bar" id="filterBar">
+            <button class="bo-filter-chip active" data-filter="all">All</button>
+            <button class="bo-filter-chip" data-filter="fav">⭐ Favourites</button>
+            <button class="bo-filter-chip" data-filter="rice">Rice & Grains</button>
+            <button class="bo-filter-chip" data-filter="oil">Cooking Oil</button>
+            <button class="bo-filter-chip" data-filter="spices">Spices</button>
+            <button class="bo-filter-chip" data-filter="biscuits">Biscuits</button>
+            <button class="bo-filter-chip" data-filter="pulses">Pulses</button>
+            <button class="bo-filter-chip" data-filter="beverages">Beverages</button>
+        </div>
+
+        <div class="bo-toolbar">
+            <span class="bo-selected-count" id="selectedCount">0 items selected</span>
+            <div class="bo-toolbar-btns">
+                <button class="bo-sel-btn select" id="selectAllBtn" onclick="selectAll()">Select All</button>
+                <button class="bo-sel-btn deselect" id="deselectAllBtn" onclick="deselectAll()" style="display:none">Deselect All</button>
+            </div>
+        </div>
+
+        <div class="bo-product-list" id="boProductList"></div>
+
+        <!-- Floating Add to Cart bar -->
+        <div class="bo-bottom-bar hidden" id="boBottomBar">
+            <button class="bo-add-btn" onclick="addSelectedToCart()">
+                <div class="bo-add-btn-left">
+                    <div class="bo-add-btn-count" id="boCount">0 products selected</div>
+                    <div class="bo-add-btn-total" id="boTotal">₹0</div>
+                </div>
+                <div class="bo-add-btn-right">
+                    <i class="fa-solid fa-cart-plus"></i> Add to Cart
+                </div>
+            </button>
+        </div>
+
+        <nav class="bottom-nav">
+            <a href="home.html" class="nav-item"><i class="fa-solid fa-house nav-icon"></i><span class="nav-label">Home</span></a>
+            <a href="bulkorder.html" class="nav-item active"><i class="fa-solid fa-list-check nav-icon"></i><span class="nav-label">Quick Order</span></a>
+            <a href="categories.html" class="nav-item"><i class="fa-solid fa-layer-group nav-icon"></i><span class="nav-label">Categories</span></a>
+            <a href="orders.html" class="nav-item"><i class="fa-solid fa-clipboard-list nav-icon"></i><span class="nav-label">Orders</span></a>
+            <a href="profile.html" class="nav-item"><i class="fa-solid fa-circle-user nav-icon"></i><span class="nav-label">Profile</span></a>
+        </nav>
+    </div>
+
+    <script>
+    const products = [
+        { id:1,  name:"Sona Masoori Rice",      bundle:"1 Bag = 25kg",          price:1250, cat:"rice" },
+        { id:2,  name:"Ponni Rice (Boiled)",     bundle:"1 Bag = 25kg",          price:1350, cat:"rice" },
+        { id:3,  name:"Basmati Rice",            bundle:"1 Bag = 25kg",          price:2500, cat:"rice" },
+        { id:4,  name:"Idly Rice",               bundle:"1 Bag = 25kg",          price:1400, cat:"rice" },
+        { id:5,  name:"Wheat (Whole)",           bundle:"1 Bag = 50kg",          price:1800, cat:"rice" },
+        { id:6,  name:"Rava (Semolina)",         bundle:"1 Box = 20×500g",       price:720,  cat:"rice" },
+        { id:7,  name:"Aashirvaad Atta",         bundle:"1 Bag = 10×5kg",        price:2200, cat:"rice" },
+        { id:8,  name:"Fortune Sunflower Oil",   bundle:"1 Carton = 15×1L",      price:2100, cat:"oil"  },
+        { id:9,  name:"Saffola Gold Oil",        bundle:"1 Carton = 12×1L",      price:1980, cat:"oil"  },
+        { id:10, name:"Coconut Oil (VVD)",       bundle:"1 Carton = 12×1L",      price:2400, cat:"oil"  },
+        { id:11, name:"MDH Garam Masala",        bundle:"1 Box = 50×100g",       price:1500, cat:"spices" },
+        { id:12, name:"Turmeric Powder",         bundle:"1 Box = 48×100g",       price:960,  cat:"spices" },
+        { id:13, name:"Red Chilli Powder",       bundle:"1 Box = 48×200g",       price:1440, cat:"spices" },
+        { id:14, name:"Coriander Powder",        bundle:"1 Box = 48×200g",       price:1200, cat:"spices" },
+        { id:15, name:"Parle-G Biscuits",        bundle:"1 Pack = 48×100g",      price:720,  cat:"biscuits" },
+        { id:16, name:"Britannia Good Day",      bundle:"1 Pack = 36×120g",      price:864,  cat:"biscuits" },
+        { id:17, name:"Hide & Seek",             bundle:"1 Pack = 24×120g",      price:720,  cat:"biscuits" },
+        { id:18, name:"Toor Dal",                bundle:"1 Bag = 25kg",          price:2500, cat:"pulses" },
+        { id:19, name:"Moong Dal",               bundle:"1 Bag = 25kg",          price:2800, cat:"pulses" },
+        { id:20, name:"Chana Dal",               bundle:"1 Bag = 25kg",          price:2200, cat:"pulses" },
+        { id:21, name:"Tata Tea Gold",           bundle:"1 Carton = 48×100g",    price:2880, cat:"beverages" },
+        { id:22, name:"Bru Instant Coffee",      bundle:"1 Carton = 24×50g",     price:1440, cat:"beverages" },
+        { id:23, name:"Coca-Cola 600ml",         bundle:"1 Crate = 24 bottles",  price:480,  cat:"beverages" },
+        { id:24, name:"Tata Salt",               bundle:"1 Bag = 30×1kg",        price:850,  cat:"all" },
+        { id:25, name:"Lifebuoy Soap",           bundle:"1 Carton = 72×125g",    price:1440, cat:"all" },
+    ];
+
+    // Load state from localStorage
+    let qty = {}, sel = {}, fav = {}, activeFilter = 'all', search = '';
+    products.forEach(p => {
+        qty[p.id] = 1;
+        sel[p.id] = false;
+        fav[p.id] = false;
+    });
+    // Restore favourites
+    try { const saved = JSON.parse(localStorage.getItem('wh_favs') || '{}'); Object.assign(fav, saved); } catch(e){}
+    // Restore cart badge
+    try { const cart = JSON.parse(localStorage.getItem('wh_cart') || '[]'); document.getElementById('cartBadge').textContent = cart.reduce((s,c)=>s+c.qty,0)||0; } catch(e){}
+
+    function saveFavs() { try { localStorage.setItem('wh_favs', JSON.stringify(fav)); } catch(e){} }
+    function saveCart(cart) { try { localStorage.setItem('wh_cart', JSON.stringify(cart)); } catch(e){} }
+
+    function visible() {
+        return products.filter(p => {
+            const matchCat = activeFilter === 'all' || p.cat === activeFilter || p.cat === 'all'
+                || (activeFilter === 'fav' && fav[p.id]);
+            const matchSearch = p.name.toLowerCase().includes(search);
+            return matchCat && matchSearch;
+        });
+    }
+
+    function render() {
+        const list = visible();
+        const el = document.getElementById('boProductList');
+        if (!list.length) {
+            el.innerHTML = '<div style="text-align:center;padding:40px;color:#aaa"><i class="fa-solid fa-box-open" style="font-size:36px;display:block;margin-bottom:10px"></i>' +
+                (activeFilter === 'fav' ? 'No favourites yet.<br><small>Tap ♡ on any product to save it here.</small>' : 'No products found') + '</div>';
+            updateUI(); return;
+        }
+        el.innerHTML = list.map(p => `
+            <div class="bo-row ${sel[p.id]?'selected':''} ${fav[p.id]?'fav':''}" id="row${p.id}" onclick="toggle(${p.id})">
+                <div class="bo-checkbox"><i class="fa-solid fa-check"></i></div>
+                <div class="bo-details">
+                    <div class="bo-top">
+                        <span class="bo-name">${p.name}</span>
+                        <span class="bo-price">₹${p.price.toLocaleString('en-IN')}</span>
+                    </div>
+                    <div class="bo-bundle">${p.bundle}</div>
+                </div>
+                <button class="bo-fav ${fav[p.id]?'active':''}" id="fav${p.id}" onclick="toggleFav(event,${p.id})" title="Favourite">
+                    <i class="fa-${fav[p.id]?'solid':'regular'} fa-heart"></i>
+                </button>
+                <div class="bo-qty" onclick="event.stopPropagation()">
+                    <button class="bo-qbtn" onclick="chgQty(${p.id},-1)">−</button>
+                    <input class="bo-qval" id="q${p.id}" type="text" value="${qty[p.id]}" readonly>
+                    <button class="bo-qbtn" onclick="chgQty(${p.id},1)">+</button>
+                </div>
+            </div>
+        `).join('');
+        updateUI();
+    }
+
+    function toggle(id) {
+        sel[id] = !sel[id];
+        document.getElementById('row'+id).classList.toggle('selected', sel[id]);
+        updateUI();
+    }
+
+    function toggleFav(e, id) {
+        e.stopPropagation();
+        fav[id] = !fav[id];
+        saveFavs();
+        const btn = document.getElementById('fav'+id);
+        const row = document.getElementById('row'+id);
+        if (btn) {
+            btn.className = 'bo-fav' + (fav[id] ? ' active' : '');
+            btn.innerHTML = '<i class="fa-'+(fav[id]?'solid':'regular')+' fa-heart"></i>';
+        }
+        if (row) row.classList.toggle('fav', fav[id]);
+        // If viewing favourites filter, re-render to remove unfavourited item
+        if (activeFilter === 'fav' && !fav[id]) render();
+    }
+
+    function chgQty(id, d) {
+        qty[id] = Math.max(1, qty[id] + d);
+        const el = document.getElementById('q'+id);
+        if (el) el.value = qty[id];
+        updateUI();
+    }
+
+    function selectAll() {
+        visible().forEach(p => {
+            sel[p.id] = true;
+            const r = document.getElementById('row'+p.id);
+            if (r) r.classList.add('selected');
+        });
+        updateUI();
+    }
+
+    function deselectAll() {
+        visible().forEach(p => {
+            sel[p.id] = false;
+            const r = document.getElementById('row'+p.id);
+            if (r) r.classList.remove('selected');
+        });
+        updateUI();
+    }
+
+    function updateUI() {
+        const selProds = products.filter(p => sel[p.id]);
+        const count = selProds.length;
+        const total = selProds.reduce((s,p) => s + p.price * qty[p.id], 0);
+
+        document.getElementById('selectedCount').textContent = count + ' item' + (count!==1?'s':'') + ' selected';
+
+        const allVis = visible();
+        const allSel = allVis.length > 0 && allVis.every(p => sel[p.id]);
+        document.getElementById('selectAllBtn').style.display = allSel ? 'none' : '';
+        document.getElementById('deselectAllBtn').style.display = allSel ? '' : 'none';
+
+        const bar = document.getElementById('boBottomBar');
+        if (count > 0) {
+            bar.classList.remove('hidden');
+            document.getElementById('boCount').textContent = count + ' product'+(count!==1?'s':'')+' · '+selProds.reduce((s,p)=>s+qty[p.id],0)+' units';
+            document.getElementById('boTotal').textContent = '₹' + total.toLocaleString('en-IN');
+        } else {
+            bar.classList.add('hidden');
+        }
+    }
+
+    function addSelectedToCart() {
+        const selProds = products.filter(p => sel[p.id]);
+        if (!selProds.length) return;
+
+        // Load existing cart
+        let cart = [];
+        try { cart = JSON.parse(localStorage.getItem('wh_cart') || '[]'); } catch(e){}
+
+        selProds.forEach(p => {
+            const existing = cart.find(c => c.id === p.id);
+            if (existing) { existing.qty += qty[p.id]; }
+            else { cart.push({ id: p.id, name: p.name, price: p.price, qty: qty[p.id], bundle: p.bundle }); }
+            sel[p.id] = false;
+        });
+
+        saveCart(cart);
+        const totalUnits = cart.reduce((s,c) => s+c.qty, 0);
+        document.getElementById('cartBadge').textContent = totalUnits;
+
+        render();
+
+        // Toast
+        const t = document.createElement('div');
+        t.innerHTML = '<i class="fa-solid fa-circle-check"></i> ' + selProds.length + ' product(s) added to cart!';
+        t.style.cssText = 'position:fixed;bottom:130px;left:50%;transform:translateX(-50%);background:#111;color:#fff;padding:10px 20px;border-radius:30px;font-size:13px;z-index:9999;font-family:inherit;white-space:nowrap;display:flex;align-items:center;gap:8px';
+        document.body.appendChild(t);
+        setTimeout(() => t.remove(), 2200);
+    }
+
+    document.getElementById('filterBar').addEventListener('click', e => {
+        if (e.target.classList.contains('bo-filter-chip')) {
+            document.querySelectorAll('.bo-filter-chip').forEach(c => c.classList.remove('active'));
+            e.target.classList.add('active');
+            activeFilter = e.target.dataset.filter;
+            render();
+        }
+    });
+
+    document.getElementById('boSearch').addEventListener('input', e => {
+        search = e.target.value.toLowerCase();
+        render();
+    });
+
+    render();
+    </script>
+</body>
+</html>

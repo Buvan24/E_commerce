@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rice & Grains - WholesaleHub</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        .product-list-vertical { display: flex; flex-direction: column; gap: 12px; padding: 16px; padding-bottom: 90px; }
+        .product-card-detailed { background: white; border: 1px solid #e8e8e8; border-radius: 10px; padding: 16px; }
+        .product-card-detailed .product-name { font-size: 16px; font-weight: 700; color: #111; margin-bottom: 4px; }
+        .product-card-detailed .product-desc { color: #666; font-size: 13px; margin-bottom: 4px; }
+        .product-card-detailed .product-bundle { color: #888; font-size: 12px; margin-bottom: 8px; }
+        .product-card-detailed .product-price { color: #2D8B3C; font-size: 18px; font-weight: 700; margin-bottom: 12px; }
+        .product-card-detailed .product-actions { display: flex; align-items: center; gap: 10px; }
+        .product-card-detailed .quantity-selector { display: flex; align-items: center; border: 1.5px solid #ddd; border-radius: 8px; overflow: hidden; }
+        .product-card-detailed .qty-btn { width: 36px; height: 36px; border: none; background: white; font-size: 18px; font-weight: 700; cursor: pointer; color: #2D8B3C; display: flex; align-items: center; justify-content: center; }
+        .product-card-detailed .qty-btn:active { background: #f0f9f1; }
+        .product-card-detailed .qty-input { width: 38px; text-align: center; border: none; border-left: 1px solid #eee; border-right: 1px solid #eee; font-size: 15px; font-weight: 700; padding: 0; height: 36px; background: white; }
+        .product-card-detailed .add-to-cart-btn { flex: 1; background: #2D8B3C; color: white; border: none; padding: 10px 16px; border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer; font-family: inherit; transition: background 0.2s; }
+        .product-card-detailed .add-to-cart-btn:hover { background: #257031; }
+        .search-box { display: flex; align-items: center; gap: 10px; background: #f5f5f5; border: 1px solid #e0e0e0; border-radius: 10px; padding: 10px 14px; }
+        .search-box input { flex: 1; border: none; background: transparent; font-size: 14px; font-family: inherit; outline: none; }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <header class="header">
+            <div class="header-content">
+                <a href="categories.html" class="back-btn"><i class="fa-solid fa-arrow-left"></i></a>
+                <h1 class="page-title">Rice & Grains</h1>
+                <a href="cart.html" class="icon-link cart-icon">
+                    <i class="fa-solid fa-cart-shopping" style="font-size:20px;color:#333"></i>
+                    <span class="badge" id="cartBadge">3</span>
+                </a>
+            </div>
+        </header>
+
+        <div class="search-container">
+            <div class="search-box">
+                <i class="fa-solid fa-magnifying-glass" style="color:#aaa;font-size:14px"></i>
+                <input type="text" placeholder="Search in Rice & Grains..." id="productSearch">
+            </div>
+        </div>
+
+        <div class="product-list-vertical" id="productList">
+            <div class="product-card-detailed">
+                <h4 class="product-name">Sona Masoori Rice</h4>
+                <p class="product-desc">Premium quality raw rice, ideal for daily cooking</p>
+                <p class="product-bundle">1 Bag = 25kg</p>
+                <p class="product-price">₹1,250</p>
+                <div class="product-actions">
+                    <div class="quantity-selector">
+                        <button class="qty-btn" onclick="decreaseQty(this)">−</button>
+                        <input type="number" value="1" min="1" class="qty-input" readonly>
+                        <button class="qty-btn" onclick="increaseQty(this)">+</button>
+                    </div>
+                    <button class="add-to-cart-btn" onclick="addToCart(this)">Add to Cart</button>
+                </div>
+            </div>
+
+            <div class="product-card-detailed">
+                <h4 class="product-name">Ponni Rice (Boiled)</h4>
+                <p class="product-desc">Traditional boiled rice, perfect for South Indian meals</p>
+                <p class="product-bundle">1 Bag = 25kg</p>
+                <p class="product-price">₹1,350</p>
+                <div class="product-actions">
+                    <div class="quantity-selector">
+                        <button class="qty-btn" onclick="decreaseQty(this)">−</button>
+                        <input type="number" value="1" min="1" class="qty-input" readonly>
+                        <button class="qty-btn" onclick="increaseQty(this)">+</button>
+                    </div>
+                    <button class="add-to-cart-btn" onclick="addToCart(this)">Add to Cart</button>
+                </div>
+            </div>
+
+            <div class="product-card-detailed">
+                <h4 class="product-name">Basmati Rice</h4>
+                <p class="product-desc">Long grain aromatic rice for biriyani and pulao</p>
+                <p class="product-bundle">1 Bag = 25kg</p>
+                <p class="product-price">₹2,500</p>
+                <div class="product-actions">
+                    <div class="quantity-selector">
+                        <button class="qty-btn" onclick="decreaseQty(this)">−</button>
+                        <input type="number" value="1" min="1" class="qty-input" readonly>
+                        <button class="qty-btn" onclick="increaseQty(this)">+</button>
+                    </div>
+                    <button class="add-to-cart-btn" onclick="addToCart(this)">Add to Cart</button>
+                </div>
+            </div>
+
+            <div class="product-card-detailed">
+                <h4 class="product-name">Idly Rice</h4>
+                <p class="product-desc">Specially processed rice for making soft idlies</p>
+                <p class="product-bundle">1 Bag = 25kg</p>
+                <p class="product-price">₹1,400</p>
+                <div class="product-actions">
+                    <div class="quantity-selector">
+                        <button class="qty-btn" onclick="decreaseQty(this)">−</button>
+                        <input type="number" value="1" min="1" class="qty-input" readonly>
+                        <button class="qty-btn" onclick="increaseQty(this)">+</button>
+                    </div>
+                    <button class="add-to-cart-btn" onclick="addToCart(this)">Add to Cart</button>
+                </div>
+            </div>
+
+            <div class="product-card-detailed">
+                <h4 class="product-name">Wheat (Whole)</h4>
+                <p class="product-desc">Premium quality whole wheat grains</p>
+                <p class="product-bundle">1 Bag = 50kg</p>
+                <p class="product-price">₹1,800</p>
+                <div class="product-actions">
+                    <div class="quantity-selector">
+                        <button class="qty-btn" onclick="decreaseQty(this)">−</button>
+                        <input type="number" value="1" min="1" class="qty-input" readonly>
+                        <button class="qty-btn" onclick="increaseQty(this)">+</button>
+                    </div>
+                    <button class="add-to-cart-btn" onclick="addToCart(this)">Add to Cart</button>
+                </div>
+            </div>
+
+            <div class="product-card-detailed">
+                <h4 class="product-name">Rava (Semolina)</h4>
+                <p class="product-desc">Fine quality rava for upma, kesari and snacks</p>
+                <p class="product-bundle">1 Box = 20 packets (500g each)</p>
+                <p class="product-price">₹720</p>
+                <div class="product-actions">
+                    <div class="quantity-selector">
+                        <button class="qty-btn" onclick="decreaseQty(this)">−</button>
+                        <input type="number" value="1" min="1" class="qty-input" readonly>
+                        <button class="qty-btn" onclick="increaseQty(this)">+</button>
+                    </div>
+                    <button class="add-to-cart-btn" onclick="addToCart(this)">Add to Cart</button>
+                </div>
+            </div>
+
+            <div class="product-card-detailed">
+                <h4 class="product-name">Ragi (Finger Millet)</h4>
+                <p class="product-desc">Nutritious ragi for healthy cooking</p>
+                <p class="product-bundle">1 Bag = 25kg</p>
+                <p class="product-price">₹1,600</p>
+                <div class="product-actions">
+                    <div class="quantity-selector">
+                        <button class="qty-btn" onclick="decreaseQty(this)">−</button>
+                        <input type="number" value="1" min="1" class="qty-input" readonly>
+                        <button class="qty-btn" onclick="increaseQty(this)">+</button>
+                    </div>
+                    <button class="add-to-cart-btn" onclick="addToCart(this)">Add to Cart</button>
+                </div>
+            </div>
+
+            <div class="product-card-detailed">
+                <h4 class="product-name">Aashirvaad Atta</h4>
+                <p class="product-desc">Premium whole wheat flour for soft rotis</p>
+                <p class="product-bundle">1 Bag = 10 packets (5kg each)</p>
+                <p class="product-price">₹2,200</p>
+                <div class="product-actions">
+                    <div class="quantity-selector">
+                        <button class="qty-btn" onclick="decreaseQty(this)">−</button>
+                        <input type="number" value="1" min="1" class="qty-input" readonly>
+                        <button class="qty-btn" onclick="increaseQty(this)">+</button>
+                    </div>
+                    <button class="add-to-cart-btn" onclick="addToCart(this)">Add to Cart</button>
+                </div>
+            </div>
+        </div>
+
+        <nav class="bottom-nav">
+            <a href="home.html" class="nav-item"><i class="fa-solid fa-house nav-icon"></i><span class="nav-label">Home</span></a>
+            <a href="bulkorder.html" class="nav-item"><i class="fa-solid fa-list-check nav-icon"></i><span class="nav-label">Quick Order</span></a>
+            <a href="categories.html" class="nav-item active"><i class="fa-solid fa-layer-group nav-icon"></i><span class="nav-label">Categories</span></a>
+            <a href="orders.html" class="nav-item"><i class="fa-solid fa-clipboard-list nav-icon"></i><span class="nav-label">Orders</span></a>
+            <a href="profile.html" class="nav-item"><i class="fa-solid fa-circle-user nav-icon"></i><span class="nav-label">Profile</span></a>
+        </nav>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        function decreaseQty(btn) {
+            const input = btn.nextElementSibling;
+            if (parseInt(input.value) > 1) input.value = parseInt(input.value) - 1;
+        }
+        function increaseQty(btn) {
+            const input = btn.previousElementSibling;
+            input.value = parseInt(input.value) + 1;
+        }
+        function addToCart(btn) {
+            const card = btn.closest('.product-card-detailed');
+            const name = card.querySelector('.product-name').textContent;
+            const qty = card.querySelector('.qty-input').value;
+            btn.textContent = '✓ Added';
+            btn.style.background = '#257031';
+            setTimeout(() => { btn.textContent = 'Add to Cart'; btn.style.background = '#2D8B3C'; }, 1500);
+        }
+        document.getElementById('productSearch').addEventListener('input', function() {
+            const q = this.value.toLowerCase();
+            document.querySelectorAll('.product-card-detailed').forEach(card => {
+                card.style.display = card.querySelector('.product-name').textContent.toLowerCase().includes(q) ? '' : 'none';
+            });
+        });
+    </script>
+</body>
+</html>

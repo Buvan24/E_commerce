@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All Categories - WholesaleHub</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        .categories-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; padding: 16px; padding-bottom: 90px; }
+        .category-card-large { background: white; border: 1px solid #e8e8e8; border-radius: 12px; padding: 20px 14px; text-align: center; cursor: pointer; transition: all 0.2s; }
+        .category-card-large:hover { border-color: #2D8B3C; background: #f0f9f1; }
+        .category-card-large .cat-icon { font-size: 36px; color: #2D8B3C; margin-bottom: 10px; display: flex; align-items: center; justify-content: center; }
+        .category-card-large h3 { font-size: 13px; font-weight: 600; margin-bottom: 4px; color: #111; }
+        .category-card-large p { font-size: 11px; color: #888; }
+    </style>
+</head>
+<body>
+<div class="app-container">
+    <header class="header">
+        <div class="header-content">
+            <a href="home.html" class="back-btn"><i class="fa-solid fa-arrow-left"></i></a>
+            <h1 class="page-title">All Categories</h1>
+            <a href="cart.html" class="icon-link cart-icon">
+                <i class="fa-solid fa-cart-shopping" style="font-size:19px;color:#333"></i>
+                <span class="badge" id="cartBadge">3</span>
+            </a>
+        </div>
+    </header>
+    <div class="search-container">
+        <div class="search-box">
+            <i class="fa-solid fa-magnifying-glass search-icon" style="font-size:14px"></i>
+            <input type="text" placeholder="Search categories..." id="categorySearch">
+        </div>
+    </div>
+    <div class="categories-grid">
+        <div class="category-card-large" onclick="location.href='category.html'"><div class="cat-icon"><i class="fa-solid fa-wheat-awn"></i></div><h3>Rice & Grains</h3><p>50+ products</p></div>
+        <div class="category-card-large" onclick="location.href='category.html'"><div class="cat-icon"><i class="fa-solid fa-seedling"></i></div><h3>Pulses & Lentils</h3><p>40+ products</p></div>
+        <div class="category-card-large" onclick="location.href='category.html'"><div class="cat-icon"><i class="fa-solid fa-bottle-droplet"></i></div><h3>Cooking Oil</h3><p>25+ products</p></div>
+        <div class="category-card-large" onclick="location.href='category.html'"><div class="cat-icon"><i class="fa-solid fa-pepper-hot"></i></div><h3>Spices</h3><p>80+ products</p></div>
+        <div class="category-card-large" onclick="location.href='category.html'"><div class="cat-icon"><i class="fa-solid fa-mug-hot"></i></div><h3>Tea & Coffee</h3><p>30+ products</p></div>
+        <div class="category-card-large" onclick="location.href='category.html'"><div class="cat-icon"><i class="fa-solid fa-cookie-bite"></i></div><h3>Biscuits & Snacks</h3><p>60+ products</p></div>
+        <div class="category-card-large" onclick="location.href='category.html'"><div class="cat-icon"><i class="fa-solid fa-bowl-food"></i></div><h3>Breakfast Foods</h3><p>35+ products</p></div>
+        <div class="category-card-large" onclick="location.href='category.html'"><div class="cat-icon"><i class="fa-solid fa-glass-water"></i></div><h3>Dairy Products</h3><p>20+ products</p></div>
+        <div class="category-card-large" onclick="location.href='category.html'"><div class="cat-icon"><i class="fa-solid fa-pump-soap"></i></div><h3>Personal Care</h3><p>70+ products</p></div>
+        <div class="category-card-large" onclick="location.href='category.html'"><div class="cat-icon"><i class="fa-solid fa-broom"></i></div><h3>Household Cleaning</h3><p>45+ products</p></div>
+        <div class="category-card-large" onclick="location.href='category.html'"><div class="cat-icon"><i class="fa-solid fa-utensils"></i></div><h3>Kitchen Essentials</h3><p>55+ products</p></div>
+        <div class="category-card-large" onclick="location.href='category.html'"><div class="cat-icon"><i class="fa-solid fa-hands-praying"></i></div><h3>Pooja Items</h3><p>25+ products</p></div>
+        <div class="category-card-large" onclick="location.href='category.html'"><div class="cat-icon"><i class="fa-solid fa-bottle-water"></i></div><h3>Beverages</h3><p>40+ products</p></div>
+        <div class="category-card-large" onclick="location.href='category.html'"><div class="cat-icon"><i class="fa-solid fa-jar"></i></div><h3>Sauces & Condiments</h3><p>35+ products</p></div>
+        <div class="category-card-large" onclick="location.href='category.html'"><div class="cat-icon"><i class="fa-solid fa-leaf"></i></div><h3>Dry Fruits & Nuts</h3><p>20+ products</p></div>
+        <div class="category-card-large" onclick="location.href='category.html'"><div class="cat-icon"><i class="fa-solid fa-bread-slice"></i></div><h3>Bakery Supplies</h3><p>30+ products</p></div>
+        <div class="category-card-large" onclick="location.href='category.html'"><div class="cat-icon"><i class="fa-solid fa-bowl-rice"></i></div><h3>Ready-to-Eat</h3><p>45+ products</p></div>
+        <div class="category-card-large" onclick="location.href='category.html'"><div class="cat-icon"><i class="fa-solid fa-candy-cane"></i></div><h3>Sweets & Confectionery</h3><p>50+ products</p></div>
+        <div class="category-card-large" onclick="location.href='category.html'"><div class="cat-icon"><i class="fa-solid fa-pencil"></i></div><h3>Stationery</h3><p>40+ products</p></div>
+        <div class="category-card-large" onclick="location.href='category.html'"><div class="cat-icon"><i class="fa-solid fa-box-open"></i></div><h3>Plastic Ware</h3><p>30+ products</p></div>
+    </div>
+    <nav class="bottom-nav">
+        <a href="home.html" class="nav-item"><i class="fa-solid fa-house nav-icon"></i><span class="nav-label">Home</span></a>
+        <a href="bulkorder.html" class="nav-item"><i class="fa-solid fa-list-check nav-icon"></i><span class="nav-label">Quick Order</span></a>
+        <a href="categories.html" class="nav-item active"><i class="fa-solid fa-layer-group nav-icon"></i><span class="nav-label">Categories</span></a>
+        <a href="orders.html" class="nav-item"><i class="fa-solid fa-clipboard-list nav-icon"></i><span class="nav-label">Orders</span></a>
+        <a href="profile.html" class="nav-item"><i class="fa-solid fa-circle-user nav-icon"></i><span class="nav-label">Profile</span></a>
+    </nav>
+</div>
+<script src="script.js"></script>
+<script>
+document.getElementById('categorySearch').addEventListener('input', function(e) {
+    const q = e.target.value.toLowerCase();
+    document.querySelectorAll('.category-card-large').forEach(c => {
+        c.style.display = c.querySelector('h3').textContent.toLowerCase().includes(q) ? '' : 'none';
+    });
+});
+</script>
+</body>
+</html>

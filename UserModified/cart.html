@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Cart - WholesaleHub</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        .empty-cart { text-align: center; padding: 80px 20px; color: #aaa; }
+        .empty-cart i { font-size: 56px; display: block; margin-bottom: 16px; color: #ddd; }
+        .empty-cart h3 { font-size: 17px; color: #555; margin-bottom: 8px; }
+        .empty-cart a { display: inline-block; margin-top: 20px; background: #2D8B3C; color: white; padding: 12px 28px; border-radius: 8px; text-decoration: none; font-weight: 600; }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <header class="header">
+            <div class="header-content">
+                <a href="home.html" class="back-btn"><i class="fa-solid fa-arrow-left"></i></a>
+                <h1 class="page-title">My Cart</h1>
+                <a href="#" class="clear-cart" onclick="clearCart(); return false;">Clear All</a>
+            </div>
+        </header>
+
+        <section class="cart-section">
+            <div class="cart-items" id="cartItems"></div>
+        </section>
+
+        <section class="price-summary" id="priceSummary" style="display:none">
+            <div class="summary-row">
+                <span>Subtotal</span>
+                <span id="subtotal">₹0</span>
+            </div>
+            <div class="summary-row">
+                <span>Delivery Charges</span>
+                <span class="free-delivery">Free</span>
+            </div>
+            <div class="summary-row">
+                <span>GST (18%)</span>
+                <span id="tax">₹0</span>
+            </div>
+            <hr>
+            <div class="summary-row total">
+                <span>Total Amount</span>
+                <span id="total">₹0</span>
+            </div>
+        </section>
+
+        <div class="checkout-container" id="checkoutBar" style="display:none">
+            <button class="checkout-btn" onclick="location.href='checkout.html'">
+                Proceed to Checkout
+            </button>
+        </div>
+
+        <nav class="bottom-nav">
+            <a href="home.html" class="nav-item"><i class="fa-solid fa-house nav-icon"></i><span class="nav-label">Home</span></a>
+            <a href="bulkorder.html" class="nav-item"><i class="fa-solid fa-list-check nav-icon"></i><span class="nav-label">Quick Order</span></a>
+            <a href="categories.html" class="nav-item"><i class="fa-solid fa-layer-group nav-icon"></i><span class="nav-label">Categories</span></a>
+            <a href="orders.html" class="nav-item"><i class="fa-solid fa-clipboard-list nav-icon"></i><span class="nav-label">Orders</span></a>
+            <a href="profile.html" class="nav-item"><i class="fa-solid fa-circle-user nav-icon"></i><span class="nav-label">Profile</span></a>
+        </nav>
+    </div>
+
+    <script>
+        let cart = [];
+
+        function loadCart() {
+            try { cart = JSON.parse(localStorage.getItem('wh_cart') || '[]'); } catch(e){ cart = []; }
+        }
+
+        function saveCart() {
+            localStorage.setItem('wh_cart', JSON.stringify(cart));
+        }
+
+        function fmt(n) { return '₹' + n.toLocaleString('en-IN'); }
+
+        function renderCart() {
+            loadCart();
+            const el = document.getElementById('cartItems');
+            const summary = document.getElementById('priceSummary');
+            const checkoutBar = document.getElementById('checkoutBar');
+
+            if (!cart.length) {
+                el.innerHTML = '<div class="empty-cart"><i class="fa-solid fa-cart-shopping"></i><h3>Your cart is empty</h3><p>Add products from Quick Order or Categories</p><a href="bulkorder.html">Start Shopping</a></div>';
+                summary.style.display = 'none';
+                checkoutBar.style.display = 'none';
+                return;
+            }
+
+            el.innerHTML = cart.map((item, idx) => `
+                <div class="cart-item" id="item${idx}">
+                    <div class="cart-item-info">
+                        <h4>${item.name}</h4>
+                        <p class="item-bundle">${item.bundle || ''}</p>
+                        <p class="item-price">${fmt(item.price)} per unit</p>
+                    </div>
+                    <div class="cart-item-actions">
+                        <div class="quantity-selector">
+                            <button class="qty-btn" onclick="updateQty(${idx}, -1)">-</button>
+                            <input type="number" value="${item.qty}" min="1" class="qty-input" readonly id="qtyInput${idx}">
+                            <button class="qty-btn" onclick="updateQty(${idx}, 1)">+</button>
+                        </div>
+                        <p class="item-subtotal" id="sub${idx}">${fmt(item.price * item.qty)}</p>
+                        <button class="remove-btn" onclick="removeItem(${idx})"><i class="fa-solid fa-trash-can"></i></button>
+                    </div>
+                </div>
+            `).join('');
+
+            // Totals
+            const subtotal = cart.reduce((s, c) => s + c.price * c.qty, 0);
+            const tax = Math.round(subtotal * 0.18);
+            const total = subtotal + tax;
+
+            document.getElementById('subtotal').textContent = fmt(subtotal);
+            document.getElementById('tax').textContent = fmt(tax);
+            document.getElementById('total').textContent = fmt(total);
+            summary.style.display = 'block';
+            checkoutBar.style.display = 'block';
+        }
+
+        function updateQty(idx, delta) {
+            if (cart[idx].qty + delta < 1) return;
+            cart[idx].qty += delta;
+            saveCart();
+            document.getElementById('qtyInput'+idx).value = cart[idx].qty;
+            document.getElementById('sub'+idx).textContent = fmt(cart[idx].price * cart[idx].qty);
+            // Update totals
+            const subtotal = cart.reduce((s,c) => s+c.price*c.qty, 0);
+            const tax = Math.round(subtotal * 0.18);
+            document.getElementById('subtotal').textContent = fmt(subtotal);
+            document.getElementById('tax').textContent = fmt(tax);
+            document.getElementById('total').textContent = fmt(subtotal + tax);
+        }
+
+        function removeItem(idx) {
+            cart.splice(idx, 1);
+            saveCart();
+            renderCart();
+        }
+
+        function clearCart() {
+            if (!cart.length) return;
+            if (confirm('Clear all items from cart?')) {
+                cart = [];
+                saveCart();
+                renderCart();
+            }
+        }
+
+        renderCart();
+    </script>
+    <script src="script.js"></script>
+</body>
+</html>

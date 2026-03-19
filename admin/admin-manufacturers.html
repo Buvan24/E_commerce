@@ -1,283 +1,380 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Manufacturers - Admin</title>
-    <link rel="stylesheet" href="styles.css">
-    <style>
-        .admin-container {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 20px;
-            background: #f5f5f5;
-            min-height: 100vh;
-        }
-        .admin-header {
-            background: white;
-            padding: 20px;
-            border-radius: 12px;
-            margin-bottom: 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .admin-header h1 {
-            font-size: 24px;
-            color: #2D8B3C;
-        }
-        .btn {
-            padding: 10px 20px;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 14px;
-            font-weight: 600;
-        }
-        .btn-primary {
-            background: #2D8B3C;
-            color: white;
-        }
-        .manufacturers-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-            gap: 20px;
-        }
-        .manufacturer-card {
-            background: white;
-            padding: 25px;
-            border-radius: 12px;
-            border: 1px solid #e0e0e0;
-        }
-        .manufacturer-card h3 {
-            font-size: 18px;
-            margin-bottom: 15px;
-            color: #2D8B3C;
-        }
-        .info-row {
-            display: flex;
-            margin-bottom: 10px;
-            font-size: 14px;
-        }
-        .info-label {
-            font-weight: 600;
-            width: 100px;
-            color: #666;
-        }
-        .info-value {
-            flex: 1;
-            color: #000;
-        }
-        .products-count {
-            background: #e8f5e9;
-            color: #2D8B3C;
-            padding: 8px 12px;
-            border-radius: 6px;
-            display: inline-block;
-            font-size: 13px;
-            font-weight: 600;
-            margin-top: 10px;
-        }
-        .card-actions {
-            display: flex;
-            gap: 10px;
-            margin-top: 15px;
-            padding-top: 15px;
-            border-top: 1px solid #f0f0f0;
-        }
-        .btn-small {
-            flex: 1;
-            padding: 8px 16px;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 13px;
-            font-weight: 600;
-        }
-        .btn-email {
-            background: #2D8B3C;
-            color: white;
-        }
-        .btn-edit {
-            background: #2196F3;
-            color: white;
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vendors - Admin</title>
+
+<style>
+
+body{
+font-family:Arial;
+margin:0;
+background:#f5f5f5;
+}
+
+.admin-container{
+max-width:1400px;
+margin:auto;
+padding:20px;
+}
+
+.admin-header{
+background:white;
+padding:20px;
+border-radius:10px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:20px;
+}
+
+.admin-header h1{
+color:#2D8B3C;
+}
+
+.btn{
+padding:10px 18px;
+border:none;
+border-radius:6px;
+cursor:pointer;
+font-weight:bold;
+}
+
+.btn-primary{
+background:#2D8B3C;
+color:white;
+}
+
+.vendors-grid{
+display:grid;
+grid-template-columns:repeat(auto-fill,minmax(350px,1fr));
+gap:20px;
+}
+
+.vendor-card{
+background:white;
+padding:20px;
+border-radius:10px;
+border:1px solid #ddd;
+}
+
+.vendor-card h3{
+color:#2D8B3C;
+margin-top:0;
+}
+
+.info-row{
+display:flex;
+margin-bottom:8px;
+}
+
+.info-label{
+width:120px;
+font-weight:bold;
+color:#555;
+}
+
+.bank-section{
+margin-top:10px;
+border-top:1px solid #eee;
+padding-top:10px;
+}
+
+.product-toggle{
+background:#e8f5e9;
+padding:8px;
+border-radius:6px;
+margin-top:10px;
+cursor:pointer;
+font-weight:bold;
+color:#2D8B3C;
+}
+
+.products-list{
+display:none;
+padding-left:20px;
+}
+
+.card-actions{
+display:flex;
+gap:10px;
+margin-top:15px;
+}
+
+.btn-small{
+flex:1;
+padding:8px;
+border:none;
+border-radius:6px;
+cursor:pointer;
+font-weight:bold;
+}
+
+.btn-email{background:#2D8B3C;color:white;}
+.btn-edit{background:#2196F3;color:white;}
+.btn-delete{background:#e53935;color:white;}
+
+.modal{
+display:none;
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,0.4);
+justify-content:center;
+align-items:center;
+}
+
+.modal-content{
+background:white;
+padding:25px;
+border-radius:10px;
+width:420px;
+position:relative;
+}
+
+.close-btn{
+position:absolute;
+top:10px;
+right:15px;
+font-size:20px;
+cursor:pointer;
+}
+
+.modal-content input{
+width:100%;
+padding:8px;
+margin-bottom:10px;
+border:1px solid #ccc;
+border-radius:6px;
+}
+
+</style>
 </head>
+
 <body>
-    <div class="admin-container">
-        <!-- Header -->
-        <div class="admin-header">
-            <div>
-                <a href="admin-dashboard.html" style="text-decoration: none; color: #666; font-size: 14px;">← Back to Dashboard</a>
-                <h1>🏭 Manufacturers</h1>
-            </div>
-            <button class="btn btn-primary" onclick="alert('Add manufacturer feature')">+ Add Manufacturer</button>
-        </div>
 
-        <!-- Manufacturers Grid -->
-        <div class="manufacturers-grid">
-            <div class="manufacturer-card">
-                <h3>🏭 Adani Wilmar Ltd</h3>
-                <div class="info-row">
-                    <span class="info-label">Email:</span>
-                    <span class="info-value">sales@adaniwilmar.com</span>
-                </div>
-                <div class="info-row">
-                    <span class="info-label">Phone:</span>
-                    <span class="info-value">+91 79 2656 5555</span>
-                </div>
-                <div class="info-row">
-                    <span class="info-label">GST:</span>
-                    <span class="info-value">24AAACP1718D1ZK</span>
-                </div>
-                <div class="info-row">
-                    <span class="info-label">Location:</span>
-                    <span class="info-value">Ahmedabad, Gujarat</span>
-                </div>
-                <div class="products-count">📦 8 Products</div>
-                <div class="card-actions">
-                    <button class="btn-small btn-email" onclick="emailManufacturer('sales@adaniwilmar.com')">📧 Email</button>
-                    <button class="btn-small btn-edit" onclick="alert('Edit manufacturer')">✏️ Edit</button>
-                </div>
-            </div>
+<div class="admin-container">
 
-            <div class="manufacturer-card">
-                <h3>🏭 Parle Products Pvt Ltd</h3>
-                <div class="info-row">
-                    <span class="info-label">Email:</span>
-                    <span class="info-value">orders@parleproducts.com</span>
-                </div>
-                <div class="info-row">
-                    <span class="info-label">Phone:</span>
-                    <span class="info-value">+91 22 2414 0164</span>
-                </div>
-                <div class="info-row">
-                    <span class="info-label">GST:</span>
-                    <span class="info-value">27AAACP3578M1ZV</span>
-                </div>
-                <div class="info-row">
-                    <span class="info-label">Location:</span>
-                    <span class="info-value">Mumbai, Maharashtra</span>
-                </div>
-                <div class="products-count">📦 15 Products</div>
-                <div class="card-actions">
-                    <button class="btn-small btn-email" onclick="emailManufacturer('orders@parleproducts.com')">📧 Email</button>
-                    <button class="btn-small btn-edit" onclick="alert('Edit manufacturer')">✏️ Edit</button>
-                </div>
-            </div>
+<div class="admin-header">
 
-            <div class="manufacturer-card">
-                <h3>🏭 Sri Venkateshwara Mills</h3>
-                <div class="info-row">
-                    <span class="info-label">Email:</span>
-                    <span class="info-value">sales@svmills.com</span>
-                </div>
-                <div class="info-row">
-                    <span class="info-label">Phone:</span>
-                    <span class="info-value">+91 422 2234567</span>
-                </div>
-                <div class="info-row">
-                    <span class="info-label">GST:</span>
-                    <span class="info-value">33AABCS1234F1Z5</span>
-                </div>
-                <div class="info-row">
-                    <span class="info-label">Location:</span>
-                    <span class="info-value">Coimbatore, Tamil Nadu</span>
-                </div>
-                <div class="products-count">📦 12 Products</div>
-                <div class="card-actions">
-                    <button class="btn-small btn-email" onclick="emailManufacturer('sales@svmills.com')">📧 Email</button>
-                    <button class="btn-small btn-edit" onclick="alert('Edit manufacturer')">✏️ Edit</button>
-                </div>
-            </div>
+<div>
+<a href="admin-dashboard.html">← Back to Dashboard</a>
+<h1>🏪 Vendors</h1>
+</div>
 
-            <div class="manufacturer-card">
-                <h3>🏭 MDH Spices</h3>
-                <div class="info-row">
-                    <span class="info-label">Email:</span>
-                    <span class="info-value">orders@mdhspices.com</span>
-                </div>
-                <div class="info-row">
-                    <span class="info-label">Phone:</span>
-                    <span class="info-value">+91 11 2765 2000</span>
-                </div>
-                <div class="info-row">
-                    <span class="info-label">GST:</span>
-                    <span class="info-value">07AAACM0114A1ZV</span>
-                </div>
-                <div class="info-row">
-                    <span class="info-label">Location:</span>
-                    <span class="info-value">New Delhi, Delhi</span>
-                </div>
-                <div class="products-count">📦 25 Products</div>
-                <div class="card-actions">
-                    <button class="btn-small btn-email" onclick="emailManufacturer('orders@mdhspices.com')">📧 Email</button>
-                    <button class="btn-small btn-edit" onclick="alert('Edit manufacturer')">✏️ Edit</button>
-                </div>
-            </div>
+<button class="btn btn-primary" onclick="openAddForm()">+ Add Vendor</button>
 
-            <div class="manufacturer-card">
-                <h3>🏭 Tata Chemicals Ltd</h3>
-                <div class="info-row">
-                    <span class="info-label">Email:</span>
-                    <span class="info-value">sales@tatachemicals.com</span>
-                </div>
-                <div class="info-row">
-                    <span class="info-label">Phone:</span>
-                    <span class="info-value">+91 22 6665 8282</span>
-                </div>
-                <div class="info-row">
-                    <span class="info-label">GST:</span>
-                    <span class="info-value">27AAACT2727Q1ZV</span>
-                </div>
-                <div class="info-row">
-                    <span class="info-label">Location:</span>
-                    <span class="info-value">Mumbai, Maharashtra</span>
-                </div>
-                <div class="products-count">📦 6 Products</div>
-                <div class="card-actions">
-                    <button class="btn-small btn-email" onclick="emailManufacturer('sales@tatachemicals.com')">📧 Email</button>
-                    <button class="btn-small btn-edit" onclick="alert('Edit manufacturer')">✏️ Edit</button>
-                </div>
-            </div>
+</div>
 
-            <div class="manufacturer-card">
-                <h3>🏭 Hindustan Unilever Ltd</h3>
-                <div class="info-row">
-                    <span class="info-label">Email:</span>
-                    <span class="info-value">customer.care@unilever.com</span>
-                </div>
-                <div class="info-row">
-                    <span class="info-label">Phone:</span>
-                    <span class="info-value">+91 22 3983 0000</span>
-                </div>
-                <div class="info-row">
-                    <span class="info-label">GST:</span>
-                    <span class="info-value">27AAACH2222H1Z0</span>
-                </div>
-                <div class="info-row">
-                    <span class="info-label">Location:</span>
-                    <span class="info-value">Mumbai, Maharashtra</span>
-                </div>
-                <div class="products-count">📦 35 Products</div>
-                <div class="card-actions">
-                    <button class="btn-small btn-email" onclick="emailManufacturer('customer.care@unilever.com')">📧 Email</button>
-                    <button class="btn-small btn-edit" onclick="alert('Edit manufacturer')">✏️ Edit</button>
-                </div>
-            </div>
-        </div>
-    </div>
 
-    <script>
-        // Check admin login
-        if (!sessionStorage.getItem('isAdmin')) {
-            window.location.href = 'admin-login.html';
-        }
+<div class="vendors-grid" id="vendorGrid">
 
-        function emailManufacturer(email) {
-            window.location.href = `mailto:${email}`;
-        }
-    </script>
+<div class="vendor-card">
+
+<h3>🏪 Adani Wilmar Ltd</h3>
+
+<div class="info-row"><span class="info-label">Email:</span><span class="info-value">sales@adaniwilmar.com</span></div>
+
+<div class="info-row"><span class="info-label">Phone:</span><span class="info-value">+91 79 2656 5555</span></div>
+
+<div class="info-row"><span class="info-label">GST:</span><span class="info-value">24AAACP1718D1ZK</span></div>
+
+<div class="info-row"><span class="info-label">Location:</span><span class="info-value">Ahmedabad, Gujarat</span></div>
+
+<div class="bank-section">
+
+<b>Bank Details</b>
+
+<div class="info-row"><span class="info-label">Bank:</span><span class="info-value">HDFC Bank</span></div>
+
+<div class="info-row"><span class="info-label">Account:</span><span class="info-value">123456789012</span></div>
+
+<div class="info-row"><span class="info-label">IFSC:</span><span class="info-value">HDFC0001234</span></div>
+
+</div>
+
+<div class="product-toggle" onclick="toggleProducts(this)">3 Products</div>
+
+<ul class="products-list">
+<li>Fortune Sunflower Oil</li>
+<li>Fortune Besan</li>
+<li>Fortune Rice Bran Oil</li>
+</ul>
+
+<div class="card-actions">
+
+<button class="btn-small btn-email" onclick="emailVendor('sales@adaniwilmar.com')">📧 Email</button>
+
+<button class="btn-small btn-edit" onclick="editVendor(this)">✏️ Edit</button>
+
+<button class="btn-small btn-delete" onclick="deleteVendor(this)">🗑 Delete</button>
+
+</div>
+
+</div>
+
+</div>
+</div>
+
+
+<div class="modal" id="vendorModal">
+
+<div class="modal-content">
+
+<span class="close-btn" onclick="closeForm()">✖</span>
+
+<h3>Add / Edit Vendor</h3>
+
+<input id="name" placeholder="Vendor Name">
+<input id="email" placeholder="Email">
+<input id="phone" placeholder="Phone">
+<input id="gst" placeholder="GST">
+<input id="location" placeholder="Location">
+<input id="bank" placeholder="Bank Name">
+<input id="account" placeholder="Account Number">
+<input id="ifsc" placeholder="IFSC Code">
+<input id="products" placeholder="Products (comma separated)">
+
+<button class="btn btn-primary" onclick="saveVendor()">Save Vendor</button>
+
+</div>
+</div>
+
+
+<script>
+
+let editingCard=null
+
+function emailVendor(email){
+window.location.href="mailto:"+email
+}
+
+function toggleProducts(btn){
+let list=btn.nextElementSibling
+list.style.display=list.style.display==="block"?"none":"block"
+}
+
+function openAddForm(){
+editingCard=null
+clearForm()
+document.getElementById("vendorModal").style.display="flex"
+}
+
+function closeForm(){
+document.getElementById("vendorModal").style.display="none"
+}
+
+function clearForm(){
+document.querySelectorAll("#vendorModal input").forEach(i=>i.value="")
+}
+
+function editVendor(btn){
+
+editingCard=btn.closest(".vendor-card")
+
+let values=editingCard.querySelectorAll(".info-value")
+
+document.getElementById("name").value=editingCard.querySelector("h3").innerText.replace("🏪 ","")
+document.getElementById("email").value=values[0].innerText
+document.getElementById("phone").value=values[1].innerText
+document.getElementById("gst").value=values[2].innerText
+document.getElementById("location").value=values[3].innerText
+
+let bank=editingCard.querySelectorAll(".bank-section .info-value")
+
+document.getElementById("bank").value=bank[0].innerText
+document.getElementById("account").value=bank[1].innerText
+document.getElementById("ifsc").value=bank[2].innerText
+
+let products=[]
+editingCard.querySelectorAll(".products-list li").forEach(li=>products.push(li.innerText))
+
+document.getElementById("products").value=products.join(",")
+
+document.getElementById("vendorModal").style.display="flex"
+
+}
+
+function deleteVendor(btn){
+if(confirm("Delete this vendor?")){
+btn.closest(".vendor-card").remove()
+}
+}
+
+function saveVendor(){
+
+let name=document.getElementById("name").value
+let email=document.getElementById("email").value
+let phone=document.getElementById("phone").value
+let gst=document.getElementById("gst").value
+let location=document.getElementById("location").value
+let bank=document.getElementById("bank").value
+let account=document.getElementById("account").value
+let ifsc=document.getElementById("ifsc").value
+
+let products=document.getElementById("products").value.split(",")
+
+let productHTML=""
+products.forEach(p=>productHTML+=`<li>${p.trim()}</li>`)
+
+let cardHTML=`
+
+<h3>🏪 ${name}</h3>
+
+<div class="info-row"><span class="info-label">Email:</span><span class="info-value">${email}</span></div>
+<div class="info-row"><span class="info-label">Phone:</span><span class="info-value">${phone}</span></div>
+<div class="info-row"><span class="info-label">GST:</span><span class="info-value">${gst}</span></div>
+<div class="info-row"><span class="info-label">Location:</span><span class="info-value">${location}</span></div>
+
+<div class="bank-section">
+
+<b>Bank Details</b>
+
+<div class="info-row"><span class="info-label">Bank:</span><span class="info-value">${bank}</span></div>
+<div class="info-row"><span class="info-label">Account:</span><span class="info-value">${account}</span></div>
+<div class="info-row"><span class="info-label">IFSC:</span><span class="info-value">${ifsc}</span></div>
+
+</div>
+
+<div class="product-toggle" onclick="toggleProducts(this)">
+${products.length} Products
+</div>
+
+<ul class="products-list">
+${productHTML}
+</ul>
+
+<div class="card-actions">
+
+<button class="btn-small btn-email" onclick="emailVendor('${email}')">📧 Email</button>
+
+<button class="btn-small btn-edit" onclick="editVendor(this)">✏️ Edit</button>
+
+<button class="btn-small btn-delete" onclick="deleteVendor(this)">🗑 Delete</button>
+
+</div>
+`
+
+if(editingCard){
+editingCard.innerHTML=cardHTML
+}else{
+
+let card=document.createElement("div")
+card.className="vendor-card"
+card.innerHTML=cardHTML
+
+document.getElementById("vendorGrid").appendChild(card)
+
+}
+
+closeForm()
+
+}
+
+</script>
+
 </body>
 </html>

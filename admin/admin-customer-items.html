@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<title>Customer Items</title>
+
+<style>
+
+body{
+font-family:'Segoe UI';
+background:#f4f6f9;
+padding:30px;
+}
+
+.container{
+max-width:900px;
+margin:auto;
+}
+
+h1{
+margin-bottom:20px;
+}
+
+.card{
+background:white;
+padding:20px;
+border-radius:8px;
+box-shadow:0 2px 8px rgba(0,0,0,0.08);
+}
+
+table{
+width:100%;
+border-collapse:collapse;
+}
+
+th{
+background:#2c3e50;
+color:white;
+padding:12px;
+text-align:left;
+}
+
+td{
+padding:12px;
+border-bottom:1px solid #eee;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<h1 id="title"></h1>
+
+<div class="card">
+
+<table>
+
+<thead>
+<tr>
+<th>Product</th>
+<th>Quantity</th>
+</tr>
+</thead>
+
+<tbody id="itemsBody"></tbody>
+
+</table>
+
+</div>
+
+</div>
+
+
+<script>
+
+const orders=[
+
+{customerId:"C001",shop:"Shop A",product:"Rice",quantity:3},
+{customerId:"C001",shop:"Shop A",product:"Sugar",quantity:2},
+
+{customerId:"C002",shop:"Shop B",product:"Rice",quantity:5},
+{customerId:"C002",shop:"Shop B",product:"Oil",quantity:3},
+
+{customerId:"C003",shop:"Shop C",product:"Sugar",quantity:4},
+
+
+];
+
+const params=new URLSearchParams(window.location.search);
+const customer=params.get("customer");
+
+document.getElementById("title").innerText="Orders for Customer "+customer;
+
+const itemsBody=document.getElementById("itemsBody");
+
+orders
+.filter(o=>o.customerId===customer)
+.forEach(o=>{
+
+const row=document.createElement("tr");
+
+row.innerHTML=`
+<td>${o.product}</td>
+<td>${o.quantity}</td>
+`;
+
+itemsBody.appendChild(row);
+
+});
+
+</script>
+
+</body>
+
+</html>

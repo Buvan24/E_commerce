@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Orders - WholesaleHub</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        .filter-tabs { display: flex; background: white; border-bottom: 1px solid #e0e0e0; }
+        .filter-tab { flex: 1; padding: 14px 8px; text-align: center; border: none; background: white; cursor: pointer; font-size: 14px; font-family: inherit; border-bottom: 2px solid transparent; color: #666; }
+        .filter-tab.active { color: #2D8B3C; border-bottom-color: #2D8B3C; font-weight: 600; }
+        .orders-list { padding: 10px 0 90px 0; }
+        .order-card { background: white; margin: 10px 16px; padding: 16px; border-radius: 10px; border: 1px solid #e0e0e0; }
+        .order-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+        .order-id { font-weight: 700; font-size: 15px; color: #111; }
+        .order-status { padding: 4px 12px; border-radius: 20px; font-size: 11px; font-weight: 700; }
+        .status-delivered { background: #E8F5E9; color: #2E7D32; }
+        .status-pending { background: #FFF3E0; color: #E65100; }
+        .status-cancelled { background: #FFEBEE; color: #C62828; }
+        .order-meta { color: #888; font-size: 13px; margin-bottom: 4px; }
+        .order-footer { display: flex; justify-content: space-between; align-items: center; padding-top: 12px; border-top: 1px solid #f0f0f0; margin-top: 10px; }
+        .order-total { font-size: 17px; font-weight: 700; color: #2D8B3C; }
+        .view-details-btn { background: white; color: #2D8B3C; border: 1.5px solid #2D8B3C; padding: 7px 16px; border-radius: 6px; font-size: 13px; font-weight: 600; cursor: pointer; text-decoration: none; font-family: inherit; }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <header class="header">
+            <div class="header-content">
+                <a href="home.html" class="back-btn"><i class="fa-solid fa-arrow-left"></i></a>
+                <h1 class="page-title">My Orders</h1>
+                <span style="width:24px"></span>
+            </div>
+        </header>
+
+        <div class="filter-tabs">
+            <button class="filter-tab active" onclick="filterOrders('all', this)">All</button>
+            <button class="filter-tab" onclick="filterOrders('pending', this)">Pending</button>
+            <button class="filter-tab" onclick="filterOrders('delivered', this)">Delivered</button>
+            <button class="filter-tab" onclick="filterOrders('cancelled', this)">Cancelled</button>
+        </div>
+
+        <div class="orders-list">
+            <div class="order-card" data-status="delivered">
+                <div class="order-header">
+                    <div class="order-id">Order #145823</div>
+                    <div class="order-status status-delivered">DELIVERED</div>
+                </div>
+                <div class="order-meta">Placed on Feb 5, 2026 | 10:30 AM</div>
+                <div class="order-meta">4 items</div>
+                <div class="order-footer">
+                    <div class="order-total">₹8,036</div>
+                    <button class="view-details-btn">View Details</button>
+                </div>
+            </div>
+
+            <div class="order-card" data-status="pending">
+                <div class="order-header">
+                    <div class="order-id">Order #145698</div>
+                    <div class="order-status status-pending">PROCESSING</div>
+                </div>
+                <div class="order-meta">Placed on Feb 3, 2026 | 2:15 PM</div>
+                <div class="order-meta">7 items</div>
+                <div class="order-footer">
+                    <div class="order-total">₹12,450</div>
+                    <button class="view-details-btn">View Details</button>
+                </div>
+            </div>
+
+            <div class="order-card" data-status="delivered">
+                <div class="order-header">
+                    <div class="order-id">Order #145421</div>
+                    <div class="order-status status-delivered">DELIVERED</div>
+                </div>
+                <div class="order-meta">Placed on Jan 28, 2026 | 11:45 AM</div>
+                <div class="order-meta">5 items</div>
+                <div class="order-footer">
+                    <div class="order-total">₹9,800</div>
+                    <button class="view-details-btn">View Details</button>
+                </div>
+            </div>
+
+            <div class="order-card" data-status="delivered">
+                <div class="order-header">
+                    <div class="order-id">Order #145203</div>
+                    <div class="order-status status-delivered">DELIVERED</div>
+                </div>
+                <div class="order-meta">Placed on Jan 24, 2026 | 3:20 PM</div>
+                <div class="order-meta">3 items</div>
+                <div class="order-footer">
+                    <div class="order-total">₹6,200</div>
+                    <button class="view-details-btn">View Details</button>
+                </div>
+            </div>
+
+            <div class="order-card" data-status="cancelled">
+                <div class="order-header">
+                    <div class="order-id">Order #144987</div>
+                    <div class="order-status status-cancelled">CANCELLED</div>
+                </div>
+                <div class="order-meta">Placed on Jan 20, 2026 | 9:00 AM</div>
+                <div class="order-meta">2 items</div>
+                <div class="order-footer">
+                    <div class="order-total">₹4,100</div>
+                    <button class="view-details-btn">View Details</button>
+                </div>
+            </div>
+        </div>
+
+        <nav class="bottom-nav">
+            <a href="home.html" class="nav-item"><i class="fa-solid fa-house nav-icon"></i><span class="nav-label">Home</span></a>
+            <a href="bulkorder.html" class="nav-item"><i class="fa-solid fa-list-check nav-icon"></i><span class="nav-label">Quick Order</span></a>
+            <a href="categories.html" class="nav-item"><i class="fa-solid fa-layer-group nav-icon"></i><span class="nav-label">Categories</span></a>
+            <a href="orders.html" class="nav-item active"><i class="fa-solid fa-clipboard-list nav-icon"></i><span class="nav-label">Orders</span></a>
+            <a href="profile.html" class="nav-item"><i class="fa-solid fa-circle-user nav-icon"></i><span class="nav-label">Profile</span></a>
+        </nav>
+    </div>
+    <script src="script.js"></script>
+    <script>
+        function filterOrders(status, btn) {
+            document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+            btn.classList.add('active');
+            document.querySelectorAll('.order-card').forEach(card => {
+                card.style.display = (status === 'all' || card.dataset.status === status) ? 'block' : 'none';
+            });
+        }
+    </script>
+</body>
+</html>

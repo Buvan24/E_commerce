@@ -1,419 +1,388 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Order from Manufacturers - Admin</title>
-    <link rel="stylesheet" href="styles.css">
-    <style>
-        .admin-container {
-            max-width: 1000px;
-            margin: 0 auto;
-            padding: 20px;
-            background: #f5f5f5;
-            min-height: 100vh;
-        }
-        .admin-header {
-            background: white;
-            padding: 20px;
-            border-radius: 12px;
-            margin-bottom: 20px;
-        }
-        .admin-header h1 {
-            font-size: 24px;
-            color: #2D8B3C;
-        }
-        .order-form-card {
-            background: white;
-            padding: 30px;
-            border-radius: 12px;
-            margin-bottom: 20px;
-        }
-        .form-section {
-            margin-bottom: 30px;
-        }
-        .form-section h3 {
-            font-size: 18px;
-            margin-bottom: 15px;
-            color: #2D8B3C;
-            border-bottom: 2px solid #2D8B3C;
-            padding-bottom: 10px;
-        }
-        .form-group {
-            margin-bottom: 20px;
-        }
-        .form-group label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 600;
-            font-size: 14px;
-        }
-        .form-group input,
-        .form-group select,
-        .form-group textarea {
-            width: 100%;
-            padding: 12px;
-            border: 1px solid #ddd;
-            border-radius: 6px;
-            font-size: 14px;
-        }
-        .form-group textarea {
-            resize: vertical;
-            min-height: 120px;
-        }
-        .form-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 20px;
-        }
-        .info-box {
-            background: #e8f5e9;
-            border-left: 4px solid #2D8B3C;
-            padding: 15px;
-            border-radius: 6px;
-            margin-bottom: 20px;
-        }
-        .info-box strong {
-            color: #2D8B3C;
-        }
-        .email-preview {
-            background: #f9f9f9;
-            border: 1px solid #e0e0e0;
-            padding: 20px;
-            border-radius: 8px;
-            margin-top: 20px;
-        }
-        .email-preview h4 {
-            margin-bottom: 15px;
-            color: #666;
-        }
-        .email-content {
-            background: white;
-            padding: 20px;
-            border-radius: 6px;
-            white-space: pre-line;
-            line-height: 1.6;
-        }
-        .btn {
-            padding: 12px 24px;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 15px;
-            font-weight: 600;
-        }
-        .btn-primary {
-            background: #2D8B3C;
-            color: white;
-        }
-        .btn-secondary {
-            background: white;
-            color: #2D8B3C;
-            border: 1px solid #2D8B3C;
-        }
-        .button-group {
-            display: flex;
-            gap: 10px;
-            margin-top: 20px;
-        }
-        .manufacturer-info {
-            background: #f5f5f5;
-            padding: 15px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-        }
-        .manufacturer-info div {
-            margin-bottom: 8px;
-            font-size: 14px;
-        }
-        .manufacturer-info strong {
-            display: inline-block;
-            width: 120px;
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Vendor Ordering System</title>
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial, Helvetica, sans-serif;
+}
+
+body{
+background:#f3f5f7;
+}
+
+.container{
+display:flex;
+height:100vh;
+}
+
+/* Sidebar */
+
+.sidebar{
+width:280px;
+background:#1e293b;
+color:white;
+padding:20px;
+overflow-y:auto;
+}
+
+.sidebar h2{
+margin-bottom:20px;
+}
+
+.vendor{
+background:#334155;
+padding:15px;
+border-radius:8px;
+margin-bottom:10px;
+cursor:pointer;
+transition:0.2s;
+}
+
+.vendor:hover{
+background:#475569;
+}
+
+/* Main */
+
+.main{
+flex:1;
+padding:30px;
+overflow-y:auto;
+}
+
+/* Card */
+
+.card{
+background:white;
+padding:25px;
+border-radius:12px;
+box-shadow:0 4px 12px rgba(0,0,0,0.08);
+margin-bottom:25px;
+}
+
+.card h3{
+margin-bottom:15px;
+color:#2D8B3C;
+}
+
+/* Product list */
+
+.product{
+display:flex;
+align-items:center;
+justify-content:space-between;
+padding:12px;
+border-bottom:1px solid #eee;
+}
+
+.product:last-child{
+border-bottom:none;
+}
+
+.product input[type="number"]{
+width:90px;
+padding:6px;
+}
+
+/* Button */
+
+button{
+background:#2D8B3C;
+color:white;
+border:none;
+padding:10px 18px;
+border-radius:6px;
+cursor:pointer;
+font-weight:600;
+}
+
+button:hover{
+opacity:0.9;
+}
+
+/* Order Summary */
+
+.summary-item{
+display:flex;
+justify-content:space-between;
+padding:8px 0;
+border-bottom:1px solid #eee;
+}
+
+.email-preview{
+background:#f9fafb;
+padding:15px;
+border-radius:8px;
+white-space:pre-line;
+margin-top:15px;
+font-size:14px;
+}
+
+</style>
+
 </head>
+
 <body>
-    <div class="admin-container">
-        <!-- Header -->
-        <div class="admin-header">
-            <a href="admin-dashboard.html" style="text-decoration: none; color: #666; font-size: 14px;">← Back to Dashboard</a>
-            <h1>📧 Order from Manufacturer</h1>
-        </div>
 
-        <!-- Info Box -->
-        <div class="info-box">
-            <strong>📌 How it works:</strong> Select a product, enter order quantity, and we'll generate an email to send to the manufacturer. You can review and customize the email before sending.
-        </div>
+<div class="container">
 
-        <!-- Order Form -->
-        <div class="order-form-card">
-            <form id="orderForm">
-                <!-- Product Selection -->
-                <div class="form-section">
-                    <h3>1️⃣ Select Product</h3>
-                    <div class="form-group">
-                        <label for="productSelect">Choose Product *</label>
-                        <select id="productSelect" required onchange="loadProductDetails()">
-                            <option value="">-- Select a product --</option>
-                            <option value="1">Fortune Sunflower Oil (Low Stock: 12 units)</option>
-                            <option value="2">Parle-G Biscuits (Low Stock: 8 units)</option>
-                            <option value="3">Sona Masoori Rice (Medium Stock: 45 units)</option>
-                            <option value="4">MDH Garam Masala (Low Stock: 15 units)</option>
-                            <option value="5">Tata Salt (Good Stock: 120 units)</option>
-                        </select>
-                    </div>
+<!-- Sidebar Vendors -->
 
-                    <!-- Manufacturer Info (Auto-populated) -->
-                    <div class="manufacturer-info" id="manufacturerInfo" style="display: none;">
-                        <strong>Manufacturer Details:</strong>
-                        <div><strong>Name:</strong> <span id="mfrName">-</span></div>
-                        <div><strong>Email:</strong> <span id="mfrEmail">-</span></div>
-                        <div><strong>Phone:</strong> <span id="mfrPhone">-</span></div>
-                        <div><strong>GST:</strong> <span id="mfrGST">-</span></div>
-                    </div>
-                </div>
+<div class="sidebar">
 
-                <!-- Order Details -->
-                <div class="form-section">
-                    <h3>2️⃣ Order Details</h3>
-                    <div class="form-grid">
-                        <div class="form-group">
-                            <label for="orderQuantity">Order Quantity (units) *</label>
-                            <input type="number" id="orderQuantity" min="1" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="deliveryDate">Expected Delivery Date</label>
-                            <input type="date" id="deliveryDate">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="additionalNotes">Additional Notes/Requirements</label>
-                        <textarea id="additionalNotes" placeholder="Any special instructions or requirements..."></textarea>
-                    </div>
-                </div>
+<h2>Vendors</h2>
 
-                <!-- Your Details -->
-                <div class="form-section">
-                    <h3>3️⃣ Your Contact Details</h3>
-                    <div class="form-grid">
-                        <div class="form-group">
-                            <label for="yourName">Your Name *</label>
-                            <input type="text" id="yourName" value="WholesaleHub Admin" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="yourEmail">Your Email *</label>
-                            <input type="email" id="yourEmail" value="admin@wholesalehub.com" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="yourPhone">Your Phone *</label>
-                            <input type="tel" id="yourPhone" value="+91 9876543210" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="companyName">Company Name *</label>
-                            <input type="text" id="companyName" value="WholesaleHub Pvt Ltd" required>
-                        </div>
-                    </div>
-                </div>
+<div id="vendorList"></div>
 
-                <!-- Buttons -->
-                <div class="button-group">
-                    <button type="button" class="btn btn-secondary" onclick="previewEmail()">👁️ Preview Email</button>
-                    <button type="submit" class="btn btn-primary">📧 Generate & Send Email</button>
-                </div>
-            </form>
+</div>
 
-            <!-- Email Preview -->
-            <div class="email-preview" id="emailPreview" style="display: none;">
-                <h4>📧 Email Preview</h4>
-                <div class="email-content" id="emailContent"></div>
-                <div class="button-group">
-                    <button type="button" class="btn btn-secondary" onclick="copyEmail()">📋 Copy Email</button>
-                    <button type="button" class="btn btn-primary" onclick="sendEmail()">📧 Send Email</button>
-                </div>
-            </div>
-        </div>
-    </div>
+<!-- Main Content -->
 
-    <script>
-        // Check admin login
-        if (!sessionStorage.getItem('isAdmin')) {
-            window.location.href = 'admin-login.html';
-        }
+<div class="main">
 
-        // Sample manufacturer data (in production, fetch from backend)
-        const manufacturerData = {
-            '1': {
-                name: 'Adani Wilmar Ltd',
-                email: 'sales@adaniwilmar.com',
-                phone: '+91 79 2656 5555',
-                gst: '24AAACP1718D1ZK',
-                product: 'Fortune Sunflower Oil',
-                bundle: '15L carton'
-            },
-            '2': {
-                name: 'Parle Products Pvt Ltd',
-                email: 'orders@parleproducts.com',
-                phone: '+91 22 2414 0164',
-                gst: '27AAACP3578M1ZV',
-                product: 'Parle-G Biscuits',
-                bundle: '48 packets/carton'
-            },
-            '3': {
-                name: 'Sri Venkateshwara Mills',
-                email: 'sales@svmills.com',
-                phone: '+91 422 2234567',
-                gst: '33AABCS1234F1Z5',
-                product: 'Sona Masoori Rice',
-                bundle: '25kg bag'
-            },
-            '4': {
-                name: 'MDH Spices',
-                email: 'orders@mdhspices.com',
-                phone: '+91 11 2765 2000',
-                gst: '07AAACM0114A1ZV',
-                product: 'MDH Garam Masala',
-                bundle: '50 packets/box'
-            },
-            '5': {
-                name: 'Tata Chemicals Ltd',
-                email: 'sales@tatachemicals.com',
-                phone: '+91 22 6665 8282',
-                gst: '27AAACT2727Q1ZV',
-                product: 'Tata Salt',
-                bundle: '30 packets/bag'
-            }
-        };
+<div class="card">
 
-        function loadProductDetails() {
-            const productId = document.getElementById('productSelect').value;
-            
-            if (productId && manufacturerData[productId]) {
-                const mfr = manufacturerData[productId];
-                document.getElementById('mfrName').textContent = mfr.name;
-                document.getElementById('mfrEmail').textContent = mfr.email;
-                document.getElementById('mfrPhone').textContent = mfr.phone;
-                document.getElementById('mfrGST').textContent = mfr.gst;
-                document.getElementById('manufacturerInfo').style.display = 'block';
-            } else {
-                document.getElementById('manufacturerInfo').style.display = 'none';
-            }
-        }
+<h3 id="vendorTitle">Select a vendor</h3>
 
-        function previewEmail() {
-            const productId = document.getElementById('productSelect').value;
-            
-            if (!productId) {
-                alert('Please select a product first');
-                return;
-            }
+<div id="productList"></div>
 
-            const mfr = manufacturerData[productId];
-            const quantity = document.getElementById('orderQuantity').value;
-            const deliveryDate = document.getElementById('deliveryDate').value;
-            const notes = document.getElementById('additionalNotes').value;
-            const yourName = document.getElementById('yourName').value;
-            const yourEmail = document.getElementById('yourEmail').value;
-            const yourPhone = document.getElementById('yourPhone').value;
-            const companyName = document.getElementById('companyName').value;
+<br>
 
-            if (!quantity) {
-                alert('Please enter order quantity');
-                return;
-            }
+<button onclick="generateSummary()">Generate Order</button>
 
-            const emailContent = `Subject: Purchase Order - ${mfr.product}
+</div>
 
-Dear ${mfr.name} Team,
+<div class="card">
 
-We hope this email finds you well.
+<h3>Order Summary</h3>
 
-We would like to place a purchase order for the following:
+<div id="summary"></div>
 
-PRODUCT DETAILS:
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-Product Name: ${mfr.product}
-Quantity: ${quantity} units (${mfr.bundle})
-${deliveryDate ? `Expected Delivery: ${new Date(deliveryDate).toLocaleDateString('en-IN', {day: 'numeric', month: 'long', year: 'numeric'})}` : ''}
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+</div>
 
-${notes ? `ADDITIONAL NOTES:\n${notes}\n\n` : ''}
-Please confirm the availability and provide us with:
+<div class="card">
+
+<h3>Email Preview</h3>
+
+<div id="emailPreview" class="email-preview"></div>
+
+<br>
+
+<button onclick="copyEmail()">Copy Email</button>
+
+<button onclick="sendEmail()">Send Email</button>
+
+</div>
+
+</div>
+
+</div>
+
+<script>
+
+const vendors = [
+
+{
+name:"Adani Wilmar Ltd",
+email:"sales@adaniwilmar.com",
+products:[
+{name:"Fortune Sunflower Oil"},
+{name:"Fortune Rice Bran Oil"},
+{name:"Fortune Mustard Oil"}
+]
+},
+
+{
+name:"Parle Products Pvt Ltd",
+email:"orders@parleproducts.com",
+products:[
+{name:"Parle-G"},
+{name:"Hide & Seek"},
+{name:"Krackjack"},
+{name:"Marie Biscuit"}
+]
+},
+
+{
+name:"MDH Spices",
+email:"orders@mdhspices.com",
+products:[
+{name:"MDH Garam Masala"},
+{name:"MDH Chaat Masala"},
+{name:"MDH Kitchen King"}
+]
+},
+
+{
+name:"Tata Chemicals",
+email:"sales@tatachemicals.com",
+products:[
+{name:"Tata Salt"},
+{name:"Tata Rock Salt"},
+{name:"Tata Black Salt"}
+]
+}
+
+];
+
+let selectedVendor=null;
+
+function loadVendors(){
+
+const list=document.getElementById("vendorList");
+
+vendors.forEach((vendor,index)=>{
+
+const div=document.createElement("div");
+
+div.className="vendor";
+
+div.innerHTML=`
+<strong>${vendor.name}</strong><br>
+<small>${vendor.email}</small>
+`;
+
+div.onclick=()=>selectVendor(index);
+
+list.appendChild(div);
+
+});
+
+}
+
+function selectVendor(index){
+
+selectedVendor=vendors[index];
+
+document.getElementById("vendorTitle").innerText=
+"Products from "+selectedVendor.name;
+
+const productList=document.getElementById("productList");
+
+productList.innerHTML="";
+
+selectedVendor.products.forEach((product,i)=>{
+
+productList.innerHTML+=`
+
+<div class="product">
+
+<label>
+<input type="checkbox" id="p${i}">
+${product.name}
+</label>
+
+<input type="number" id="q${i}" placeholder="Qty">
+
+</div>
+
+`;
+
+});
+
+}
+
+function generateSummary(){
+
+const summary=document.getElementById("summary");
+summary.innerHTML="";
+
+let items=[];
+
+selectedVendor.products.forEach((p,i)=>{
+
+const checked=document.getElementById("p"+i).checked;
+const qty=document.getElementById("q"+i).value;
+
+if(checked && qty>0){
+
+summary.innerHTML+=`
+<div class="summary-item">
+<span>${p.name}</span>
+<span>${qty}</span>
+</div>
+`;
+
+items.push(`${p.name} - ${qty} units`);
+
+}
+
+});
+
+if(items.length===0){
+
+alert("Select at least one product");
+
+return;
+
+}
+
+generateEmail(items);
+
+}
+
+function generateEmail(items){
+
+const email=`
+
+Subject: Purchase Order
+
+Dear ${selectedVendor.name},
+
+We would like to place the following order:
+
+${items.join("\n")}
+
+Please confirm:
+
+• Product availability
 • Total cost including GST
-• Estimated delivery timeline
+• Delivery timeline
 • Payment terms
-• Invoice copy
 
-OUR DETAILS:
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-Company: ${companyName}
-Contact Person: ${yourName}
-Email: ${yourEmail}
-Phone: ${yourPhone}
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Thank you.
 
-Please acknowledge receipt of this order and provide the necessary details at your earliest convenience.
+Best Regards  
+WholesaleHub Admin
+`;
 
-Thank you for your continued partnership.
+document.getElementById("emailPreview").innerText=email;
 
-Best regards,
-${yourName}
-${companyName}
-${yourPhone}
-${yourEmail}`;
+}
 
-            document.getElementById('emailContent').textContent = emailContent;
-            document.getElementById('emailPreview').style.display = 'block';
-            
-            // Scroll to preview
-            document.getElementById('emailPreview').scrollIntoView({ behavior: 'smooth' });
-        }
+function copyEmail(){
 
-        function copyEmail() {
-            const emailText = document.getElementById('emailContent').textContent;
-            navigator.clipboard.writeText(emailText).then(() => {
-                alert('Email content copied to clipboard!');
-            });
-        }
+const text=document.getElementById("emailPreview").innerText;
 
-        function sendEmail() {
-            const productId = document.getElementById('productSelect').value;
-            const mfr = manufacturerData[productId];
-            const emailContent = document.getElementById('emailContent').textContent;
-            
-            // In production, this would send the email via backend API
-            // For demo, we'll create a mailto link
-            const subject = `Purchase Order - ${mfr.product}`;
-            const body = emailContent.split('\n').slice(1).join('\n'); // Remove subject line
-            
-            const mailtoLink = `mailto:${mfr.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-            
-            window.location.href = mailtoLink;
-            
-            // Also show success message
-            setTimeout(() => {
-                alert('Email client opened! The order has been logged in the system.');
-            }, 500);
-        }
+navigator.clipboard.writeText(text);
 
-        document.getElementById('orderForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            previewEmail();
-        });
+alert("Email copied!");
 
-        // Pre-select product if coming from stock page
-        const urlParams = new URLSearchParams(window.location.search);
-        const productParam = urlParams.get('product');
-        if (productParam) {
-            // Find and select the product
-            const select = document.getElementById('productSelect');
-            for (let option of select.options) {
-                if (option.text.includes(productParam)) {
-                    option.selected = true;
-                    loadProductDetails();
-                    break;
-                }
-            }
-        }
-    </script>
+}
+
+function sendEmail(){
+
+const body=document.getElementById("emailPreview").innerText;
+
+const subject="Purchase Order";
+
+window.location.href=
+`mailto:${selectedVendor.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+
+}
+
+loadVendors();
+
+</script>
+
 </body>
 </html>

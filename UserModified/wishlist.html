@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wishlist - WholesaleHub</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        .wishlist-section { padding: 10px 0 90px 0; }
+        .wishlist-item { background: white; margin: 10px 16px; padding: 16px; border-radius: 10px; border: 1px solid #e0e0e0; }
+        .wishlist-name { font-size: 16px; font-weight: 600; margin-bottom: 4px; color: #111; }
+        .wishlist-bundle { color: #666; font-size: 13px; margin-bottom: 6px; }
+        .wishlist-price { color: #2D8B3C; font-size: 18px; font-weight: 700; margin-bottom: 12px; }
+        .wishlist-actions { display: flex; gap: 10px; }
+        .add-cart-btn { background: #2D8B3C; color: white; border: none; padding: 9px 18px; border-radius: 6px; font-size: 13px; font-weight: 600; cursor: pointer; font-family: inherit; }
+        .remove-wishlist-btn { background: white; color: #e53935; border: 1.5px solid #e53935; padding: 9px 18px; border-radius: 6px; font-size: 13px; cursor: pointer; font-family: inherit; }
+        .empty-wishlist { text-align: center; padding: 80px 20px; color: #666; }
+        .browse-btn { display: inline-block; margin-top: 20px; background: #2D8B3C; color: white; padding: 12px 30px; border-radius: 8px; text-decoration: none; font-weight: 600; }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <header class="header">
+            <div class="header-content">
+                <a href="home.html" class="back-btn"><i class="fa-solid fa-arrow-left"></i></a>
+                <h1 class="page-title">My Wishlist</h1>
+                <a href="cart.html" class="icon-link cart-icon">
+                    <i class="fa-solid fa-cart-shopping" style="font-size:20px;color:#333"></i>
+                    <span class="badge" id="cartBadge">3</span>
+                </a>
+            </div>
+        </header>
+
+        <section class="wishlist-section" id="wishlistSection">
+            <div class="wishlist-item">
+                <h4 class="wishlist-name">Britannia Good Day</h4>
+                <p class="wishlist-bundle">1 Pack = 36 packets (100g each)</p>
+                <p class="wishlist-price">₹680</p>
+                <div class="wishlist-actions">
+                    <button class="add-cart-btn" onclick="moveToCart(this)">Add to Cart</button>
+                    <button class="remove-wishlist-btn" onclick="removeWishlist(this)">Remove</button>
+                </div>
+            </div>
+
+            <div class="wishlist-item">
+                <h4 class="wishlist-name">Everest Sambar Masala</h4>
+                <p class="wishlist-bundle">1 Box = 40 packets (100g each)</p>
+                <p class="wishlist-price">₹1,200</p>
+                <div class="wishlist-actions">
+                    <button class="add-cart-btn" onclick="moveToCart(this)">Add to Cart</button>
+                    <button class="remove-wishlist-btn" onclick="removeWishlist(this)">Remove</button>
+                </div>
+            </div>
+
+            <div class="wishlist-item">
+                <h4 class="wishlist-name">Nestle Maggi Noodles</h4>
+                <p class="wishlist-bundle">1 Carton = 48 packets (70g each)</p>
+                <p class="wishlist-price">₹576</p>
+                <div class="wishlist-actions">
+                    <button class="add-cart-btn" onclick="moveToCart(this)">Add to Cart</button>
+                    <button class="remove-wishlist-btn" onclick="removeWishlist(this)">Remove</button>
+                </div>
+            </div>
+
+            <div class="wishlist-item">
+                <h4 class="wishlist-name">Vim Dishwash Bar</h4>
+                <p class="wishlist-bundle">1 Carton = 60 bars (200g each)</p>
+                <p class="wishlist-price">₹540</p>
+                <div class="wishlist-actions">
+                    <button class="add-cart-btn" onclick="moveToCart(this)">Add to Cart</button>
+                    <button class="remove-wishlist-btn" onclick="removeWishlist(this)">Remove</button>
+                </div>
+            </div>
+
+            <div class="wishlist-item">
+                <h4 class="wishlist-name">Basmati Rice Premium</h4>
+                <p class="wishlist-bundle">1 Bag = 25kg</p>
+                <p class="wishlist-price">₹2,500</p>
+                <div class="wishlist-actions">
+                    <button class="add-cart-btn" onclick="moveToCart(this)">Add to Cart</button>
+                    <button class="remove-wishlist-btn" onclick="removeWishlist(this)">Remove</button>
+                </div>
+            </div>
+        </section>
+
+        <nav class="bottom-nav">
+            <a href="home.html" class="nav-item"><i class="fa-solid fa-house nav-icon"></i><span class="nav-label">Home</span></a>
+            <a href="bulkorder.html" class="nav-item"><i class="fa-solid fa-list-check nav-icon"></i><span class="nav-label">Quick Order</span></a>
+            <a href="categories.html" class="nav-item"><i class="fa-solid fa-layer-group nav-icon"></i><span class="nav-label">Categories</span></a>
+            <a href="orders.html" class="nav-item"><i class="fa-solid fa-clipboard-list nav-icon"></i><span class="nav-label">Orders</span></a>
+            <a href="profile.html" class="nav-item"><i class="fa-solid fa-circle-user nav-icon"></i><span class="nav-label">Profile</span></a>
+        </nav>
+    </div>
+    <script src="script.js"></script>
+    <script>
+        function moveToCart(btn) {
+            const item = btn.closest('.wishlist-item');
+            const name = item.querySelector('.wishlist-name').textContent;
+            alert(name + ' added to cart!');
+            item.remove();
+            checkEmpty();
+        }
+        function removeWishlist(btn) {
+            if (confirm('Remove this item from wishlist?')) {
+                btn.closest('.wishlist-item').remove();
+                checkEmpty();
+            }
+        }
+        function checkEmpty() {
+            if (!document.querySelector('.wishlist-item')) {
+                document.getElementById('wishlistSection').innerHTML = '<div class="empty-wishlist"><i class="fa-regular fa-heart" style="font-size:60px;color:#ddd;margin-bottom:16px;display:block"></i><h3>Your wishlist is empty</h3><p>Save items you like to buy them later</p><a href="home.html" class="browse-btn">Browse Products</a></div>';
+            }
+        }
+    </script>
+</body>
+</html>

@@ -11,7 +11,7 @@
         <!-- Header -->
         <header class="header">
             <div class="header-content">
-                <a href="cart.html" class="back-btn">←</a>
+                <a href="cart.html" class="back-btn"><i class="fa-solid fa-arrow-left"></i</a>
                 <h1 class="page-title">Checkout</h1>
             </div>
         </header>
@@ -23,7 +23,7 @@
                 <a href="#" class="change-link">Change</a>
             </div>
             <div class="address-box">
-                <div class="address-icon">📍</div>
+                <div class="address-icon"><i class="fa-solid fa-location-dot" style="font-size:22px;color:#2D8B3C"></i></div>
                 <div class="address-details">
                     <h4>Sri Lakshmi Stores</h4>
                     <p>45, Gandhi Road, Near Bus Stand</p>
@@ -61,51 +61,21 @@
 
         <!-- Payment Method -->
         <section class="checkout-section">
-            <h3>Select Payment Method</h3>
+            <h3>Payment Method</h3>
             <div class="payment-options">
-                <label class="payment-option">
-                    <input type="radio" name="payment" value="upi">
-                    <div class="payment-content">
-                        <span class="payment-icon">📱</span>
-                        <span>UPI (PhonePe, GPay, Paytm)</span>
-                    </div>
-                </label>
-
-                <label class="payment-option">
-                    <input type="radio" name="payment" value="card">
-                    <div class="payment-content">
-                        <span class="payment-icon">💳</span>
-                        <span>Credit/Debit Card</span>
-                    </div>
-                </label>
-
-                <label class="payment-option">
-                    <input type="radio" name="payment" value="netbanking">
-                    <div class="payment-content">
-                        <span class="payment-icon">🏦</span>
-                        <span>Net Banking</span>
-                    </div>
-                </label>
-
-                <label class="payment-option">
+                <label class="payment-option" style="border:2px solid #2D8B3C;background:#f0f9f1;border-radius:10px;">
                     <input type="radio" name="payment" value="cod" checked>
                     <div class="payment-content">
-                        <span class="payment-icon">💵</span>
-                        <span>Cash on Delivery</span>
-                    </div>
-                </label>
-
-                <label class="payment-option">
-                    <input type="radio" name="payment" value="credit">
-                    <div class="payment-content">
-                        <span class="payment-icon">📅</span>
+                        <i class="fa-solid fa-money-bill-wave" style="font-size:24px;color:#2D8B3C"></i>
                         <div>
-                            <div>Credit Terms</div>
-                            <small>Pay Later / Net 30 / Net 60</small>
+                            <div style="font-weight:600;font-size:15px;">Cash on Delivery</div>
+                            <small style="color:#666;">Pay when your order arrives</small>
                         </div>
+                        <i class="fa-solid fa-circle-check" style="color:#2D8B3C;font-size:18px;margin-left:auto"></i>
                     </div>
                 </label>
             </div>
+            <p style="font-size:12px;color:#888;margin-top:8px;padding:0 4px;"><i class="fa-solid fa-circle-info" style="color:#2D8B3C"></i> Only Cash on Delivery is available at this time.</p>
         </section>
 
         <!-- Special Instructions -->

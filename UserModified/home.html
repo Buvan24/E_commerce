@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home - WholesaleHub</title>
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 <body>
     <div class="app-container">
@@ -13,11 +14,8 @@
             <div class="header-content">
                 <h1 class="app-title">WholesaleHub</h1>
                 <div class="header-icons">
-                    <a href="wishlist.html" class="icon-link">
-                        <span class="icon">♡</span>
-                    </a>
                     <a href="cart.html" class="icon-link cart-icon">
-                        <span class="icon">🛒</span>
+                        <i class="fa-solid fa-cart-shopping" style="font-size:20px;color:#333"></i>
                         <span class="badge" id="cartBadge">3</span>
                     </a>
                 </div>
@@ -27,7 +25,7 @@
         <!-- Search Bar -->
         <div class="search-container">
             <div class="search-box">
-                <span class="search-icon">🔍</span>
+                <i class="fa-solid fa-magnifying-glass" style="color:#aaa"></i>
                 <input type="text" placeholder="Search products..." id="searchInput">
             </div>
         </div>
@@ -37,27 +35,27 @@
             <h3>Categories</h3>
             <div class="categories-scroll">
                 <div class="category-card" onclick="goToCategory('rice-grains')">
-                    <div class="category-icon">🌾</div>
+                    <div class="category-icon"><i class="fa-solid fa-wheat-awn"></i></div>
                     <p>Rice & Grains</p>
                 </div>
                 <div class="category-card" onclick="goToCategory('cooking-oil')">
-                    <div class="category-icon">🫙</div>
+                    <div class="category-icon"><i class="fa-solid fa-bottle-droplet"></i></div>
                     <p>Cooking Oil</p>
                 </div>
                 <div class="category-card" onclick="goToCategory('spices')">
-                    <div class="category-icon">🌶️</div>
+                    <div class="category-icon"><i class="fa-solid fa-pepper-hot"></i></div>
                     <p>Spices</p>
                 </div>
                 <div class="category-card" onclick="goToCategory('biscuits')">
-                    <div class="category-icon">🍪</div>
+                    <div class="category-icon"><i class="fa-solid fa-cookie-bite"></i></div>
                     <p>Biscuits</p>
                 </div>
                 <div class="category-card" onclick="goToCategory('pulses')">
-                    <div class="category-icon">🫘</div>
+                    <div class="category-icon"><i class="fa-solid fa-seedling"></i></div>
                     <p>Pulses</p>
                 </div>
                 <div class="category-card" onclick="goToCategory('tea-coffee')">
-                    <div class="category-icon">☕</div>
+                    <div class="category-icon"><i class="fa-solid fa-mug-hot"></i></div>
                     <p>Tea & Coffee</p>
                 </div>
             </div>
@@ -187,22 +185,26 @@
             </div>
         </section>
 
-        <!-- Bottom Navigation -->
+                <!-- Bottom Navigation -->
         <nav class="bottom-nav">
             <a href="home.html" class="nav-item active">
-                <span class="nav-icon">🏠</span>
+                <i class="fa-solid fa-house nav-icon"></i>
                 <span class="nav-label">Home</span>
             </a>
+            <a href="bulkorder.html" class="nav-item">
+                <i class="fa-solid fa-list-check nav-icon"></i>
+                <span class="nav-label">Quick Order</span>
+            </a>
             <a href="categories.html" class="nav-item">
-                <span class="nav-icon">📦</span>
+                <i class="fa-solid fa-layer-group nav-icon"></i>
                 <span class="nav-label">Categories</span>
             </a>
             <a href="orders.html" class="nav-item">
-                <span class="nav-icon">📋</span>
+                <i class="fa-solid fa-clipboard-list nav-icon"></i>
                 <span class="nav-label">Orders</span>
             </a>
             <a href="profile.html" class="nav-item">
-                <span class="nav-icon">👤</span>
+                <i class="fa-solid fa-circle-user nav-icon"></i>
                 <span class="nav-label">Profile</span>
             </a>
         </nav>
