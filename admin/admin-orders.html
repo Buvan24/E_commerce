@@ -339,7 +339,7 @@ const tbody = document.getElementById("customerTableBody");
 customers.forEach(c => {
   const orders = currentOrders[c.id] || [];
   const history = orderHistory[c.id] || [];
-  const itemCount = orders.reduce((s, o) => s + o.qty, 0);
+  const itemCount = orders.length;
 
   const tr = document.createElement("tr");
 
