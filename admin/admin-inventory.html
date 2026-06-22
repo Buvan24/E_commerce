@@ -1,197 +1,336 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="en">
 <head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Admin Inventory</title>
-
 <style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
 
-body{
-font-family:'Segoe UI',Arial;
-background:#f4f6f9;
-margin:0;
-padding:30px;
+body {
+  font-family: 'Segoe UI', Arial, sans-serif;
+  background: #f4f6f9;
+  padding: 30px;
+  min-height: 100vh;
 }
 
-.container{
-max-width:1000px;
-margin:auto;
+.container {
+  max-width: 1000px;
+  margin: auto;
 }
 
-.page-title{
-font-size:28px;
-font-weight:600;
-margin-bottom:20px;
-color:#2c3e50;
+.page-title {
+  font-size: 26px;
+  font-weight: 700;
+  color: #2c3e50;
+  margin-bottom: 20px;
 }
 
-.card{
-background:white;
-border-radius:10px;
-box-shadow:0 2px 10px rgba(0,0,0,0.08);
-padding:20px;
+a.back {
+  display: inline-block;
+  text-decoration: none;
+  color: #666;
+  font-size: 13px;
+  margin-bottom: 14px;
 }
 
-table{
-border-collapse:collapse;
-width:100%;
+.card {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+  overflow: hidden;
 }
 
-th{
-background:#2c3e50;
-color:white;
-padding:14px;
-text-align:left;
+table { width: 100%; border-collapse: collapse; }
+
+thead tr { background: #2c3e50; }
+
+th {
+  color: white;
+  padding: 14px 16px;
+  text-align: left;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
 }
 
-td{
-padding:14px;
-border-bottom:1px solid #eee;
-font-size:15px;
+td {
+  padding: 14px 16px;
+  border-bottom: 1px solid #eee;
+  font-size: 14px;
 }
 
-tr{
-transition:0.2s;
+tbody tr:last-child td { border-bottom: none; }
+
+tbody tr:hover {
+  background: #eef4ff;
+  cursor: pointer;
+  transform: scale(1.005);
+  transition: 0.15s;
 }
 
-tr:hover{
-background:#eef4ff;
-cursor:pointer;
-transform:scale(1.01);
+.badge {
+  display: inline-block;
+  padding: 5px 12px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  color: white;
 }
 
-.product{
-font-weight:500;
+.green { background: #27ae60; }
+.blue  { background: #3498db; }
+
+.click-hint {
+  font-size: 11px;
+  color: #aaa;
+  margin-top: 8px;
 }
 
-.badge{
-background:#3498db;
-color:white;
-padding:5px 10px;
-border-radius:6px;
-font-size:14px;
-font-weight:500;
+/* ── Detail panel (replaces the 404 page) ── */
+.detail-panel {
+  display: none;
+  margin-top: 24px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+  overflow: hidden;
+  animation: slideDown 0.22s ease;
 }
 
-.stock{
-background:#27ae60;
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-10px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
-.icon{
-margin-right:6px;
+.detail-header {
+  background: #2c3e50;
+  color: white;
+  padding: 16px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
+.detail-header h2 { font-size: 16px; font-weight: 600; }
+
+.detail-close {
+  background: rgba(255,255,255,0.15);
+  border: none;
+  color: white;
+  border-radius: 6px;
+  padding: 4px 10px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.detail-close:hover { background: rgba(255,255,255,0.25); }
+
+.detail-meta {
+  display: flex;
+  gap: 24px;
+  padding: 16px 20px;
+  background: #f8faff;
+  border-bottom: 1px solid #eee;
+  flex-wrap: wrap;
+}
+
+.meta-item label {
+  display: block;
+  font-size: 11px;
+  color: #888;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 3px;
+}
+
+.meta-item span {
+  font-size: 18px;
+  font-weight: 700;
+  color: #2c3e50;
+}
+
+.meta-item span.g { color: #27ae60; }
+.meta-item span.b { color: #3498db; }
+.meta-item span.o { color: #e67e22; }
+
+.detail-body { padding: 16px 20px 20px; }
+
+.detail-body table thead tr { background: #f0f4f8; }
+.detail-body table th { color: #444; font-size: 12px; }
+.detail-body table td { font-size: 13px; }
+.detail-body table tbody tr:hover { background: #f9fbff; cursor: default; transform: none; }
+
+.pill {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.pill-g { background: #e8f5e9; color: #2D8B3C; }
+.pill-b { background: #e3f0ff; color: #1a6fc4; }
 </style>
-
 </head>
-
 <body>
 
 <div class="container">
 
-<div class="page-title">📦 Inventory Summary</div>
+  <a class="back" href="admin-dashboard.html">← Back to Dashboard</a>
 
-<div class="card">
+  <div class="page-title">📦 Inventory Summary</div>
 
-<table id="inventoryTable">
+  <div class="card">
+    <table id="inventoryTable">
+      <thead>
+        <tr>
+          <th>Product ID</th>
+          <th>Product</th>
+          <th>Stock Available</th>
+          <th>Total Stock Ordered</th>
+        </tr>
+      </thead>
+      <tbody id="inventoryBody"></tbody>
+    </table>
+    <p class="click-hint" style="padding:8px 16px 12px;">
+      💡 Click any product row to see who ordered it
+    </p>
+  </div>
 
-<thead>
-<tr>
-<th>Product ID</th>
-<th>Product</th>
-<th>Stock Available</th>
-<th>Total Stock Ordered</th>
-</tr>
-</thead>
-
-<tbody>
-</tbody>
-
-</table>
+  <!-- Detail panel shown inline instead of navigating to a missing page -->
+  <div class="detail-panel" id="detailPanel">
+    <div class="detail-header">
+      <h2 id="detailTitle">Product Orders</h2>
+      <button class="detail-close" onclick="closeDetail()">✕ Close</button>
+    </div>
+    <div class="detail-meta" id="detailMeta"></div>
+    <div class="detail-body" id="detailBody"></div>
+  </div>
 
 </div>
-
-</div>
-
 
 <script>
 
-/* Product master data (dummy) */
-
+// ─── Product master ───────────────────────────────────────────────────────────
 const products = [
-{id:"P101",name:"Rice",stock:200},
-{id:"P102",name:"Sugar",stock:120},
-{id:"P103",name:"Oil",stock:60}
+  { id:"P101", name:"Rice",       stock:200 },
+  { id:"P102", name:"Sugar",      stock:120 },
+  { id:"P103", name:"Oil",        stock:60  },
 ];
 
-
-/* Orders placed by shops */
-
-const orders = [
-
-{product:"Rice",customer:"Shop A",quantity:30,time:"2026-03-10T09:00:00"},
-{product:"Rice",customer:"Shop B",quantity:50,time:"2026-03-10T09:10:00"},
-{product:"Rice",customer:"Shop C",quantity:40,time:"2026-03-10T09:30:00"},
-
-{product:"Sugar",customer:"Shop A",quantity:20,time:"2026-03-10T10:00:00"},
-{product:"Sugar",customer:"Shop B",quantity:15,time:"2026-03-10T10:20:00"},
-
-{product:"Oil",customer:"Shop C",quantity:10,time:"2026-03-10T11:00:00"}
-
-];
-
-
-/* Calculate total ordered quantity */
-
-const orderedTotals = {};
-
-orders.forEach(order=>{
-if(!orderedTotals[order.product]){
-orderedTotals[order.product]=0;
-}
-orderedTotals[order.product]+=order.quantity;
-});
-
-
-const inventoryBody=document.querySelector("#inventoryTable tbody");
-
-
-/* Display inventory table */
-
-products.forEach(product=>{
-
-const totalOrdered = orderedTotals[product.name] || 0;
-
-const row=document.createElement("tr");
-
-row.innerHTML=`
-
-<td><strong>${product.id}</strong></td>
-
-<td class="product">
-<span class="icon">📦</span>${product.name}
-</td>
-
-<td>
-<span class="badge stock">${product.stock}</span>
-</td>
-
-<td>
-<span class="badge">${totalOrdered}</span>
-</td>
-
-`;
-
-row.onclick=function(){
-window.location.href="admin-product-orders.html?product="+encodeURIComponent(product.name);
+// ─── Orders per product (customer details) ────────────────────────────────────
+const productOrders = {
+  "Rice": [
+    { customerId:"C001", shopName:"Sri Lakshmi Stores",   qty:3 },
+    { customerId:"C002", shopName:"New Bharat Store",     qty:5 },
+    { customerId:"C003", shopName:"Tamil Nadu Traders",   qty:4 },
+    { customerId:"C005", shopName:"Muthu Provision Store",qty:10},
+  ],
+  "Sugar": [
+    { customerId:"C001", shopName:"Sri Lakshmi Stores",   qty:2 },
+    { customerId:"C002", shopName:"New Bharat Store",     qty:2 },
+    { customerId:"C004", shopName:"Priya General Stores", qty:3 },
+  ],
+  "Oil": [
+    { customerId:"C002", shopName:"New Bharat Store",     qty:3 },
+    { customerId:"C009", shopName:"Selvam Provision",     qty:5 },
+  ],
 };
 
-inventoryBody.appendChild(row);
+// ─── Compute totals ───────────────────────────────────────────────────────────
+const orderedTotals = {};
+for (const [prod, orders] of Object.entries(productOrders)) {
+  orderedTotals[prod] = orders.reduce((s, o) => s + o.qty, 0);
+}
 
+// ─── Render inventory table ───────────────────────────────────────────────────
+const tbody = document.getElementById("inventoryBody");
+
+products.forEach(p => {
+  const total = orderedTotals[p.name] || 0;
+  const tr = document.createElement("tr");
+  tr.innerHTML = `
+    <td><strong>${p.id}</strong></td>
+    <td>📦 ${p.name}</td>
+    <td><span class="badge green">${p.stock}</span></td>
+    <td><span class="badge blue">${total}</span></td>
+  `;
+  tr.onclick = () => showDetail(p);
+  tbody.appendChild(tr);
 });
 
+// ─── Show detail panel ────────────────────────────────────────────────────────
+function showDetail(product) {
+  const orders = productOrders[product.name] || [];
+  const totalOrdered = orderedTotals[product.name] || 0;
+  const remaining = product.stock - totalOrdered;
+
+  // Highlight selected row
+  document.querySelectorAll("#inventoryBody tr").forEach(r => r.style.background = "");
+  event.currentTarget.style.background = "#dce9ff";
+
+  // Header
+  document.getElementById("detailTitle").textContent =
+    `📦 ${product.name} (${product.id}) — Who Ordered`;
+
+  // Meta info
+  document.getElementById("detailMeta").innerHTML = `
+    <div class="meta-item">
+      <label>Stock Available</label>
+      <span class="g">${product.stock}</span>
+    </div>
+    <div class="meta-item">
+      <label>Total Ordered</label>
+      <span class="b">${totalOrdered}</span>
+    </div>
+    <div class="meta-item">
+      <label>Remaining After Orders</label>
+      <span class="o">${remaining}</span>
+    </div>
+    <div class="meta-item">
+      <label>Customers Ordered</label>
+      <span>${orders.length}</span>
+    </div>
+  `;
+
+  // Orders table
+  if (orders.length === 0) {
+    document.getElementById("detailBody").innerHTML =
+      `<p style="color:#aaa;text-align:center;padding:24px;">No orders for this product yet.</p>`;
+  } else {
+    let rows = orders.map((o, i) => `
+      <tr>
+        <td>${i + 1}</td>
+        <td><strong>${o.customerId}</strong></td>
+        <td>${o.shopName}</td>
+        <td><span class="pill pill-b">${o.qty} units</span></td>
+      </tr>`).join("");
+
+    document.getElementById("detailBody").innerHTML = `
+      <table>
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Customer ID</th>
+            <th>Shop Name</th>
+            <th>Quantity Ordered</th>
+          </tr>
+        </thead>
+        <tbody>${rows}</tbody>
+      </table>`;
+  }
+
+  const panel = document.getElementById("detailPanel");
+  panel.style.display = "block";
+  panel.scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
+function closeDetail() {
+  document.getElementById("detailPanel").style.display = "none";
+  document.querySelectorAll("#inventoryBody tr").forEach(r => r.style.background = "");
+}
+
 </script>
-
 </body>
-
 </html>
